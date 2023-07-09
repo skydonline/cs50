@@ -1,0 +1,9 @@
+.other-pages {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.other-pages-link {
+    margin: 0;
+    margin-left: 10px;
+}
