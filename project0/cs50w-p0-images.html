@@ -3,11 +3,17 @@
     <head>
         <link rel="stylesheet" href="cs50w-p0-styles.css">
         <meta name="viewport" content="width=device_width, initial-scale=1.0">
-        <title>Google Search Homepage</title>
+        <title>Image Search</title>
     </head>
     <body>
         <div class="other-pages">
             <a class="other-pages-link" href="cs50w-p0-index.html">Search</a>
         </div>
+
+        <form action="https://www.google.com/search?tbm=isch">
+            <input id="google-search-bar" type="text" name="q">
+            <input type="hidden" name="tbm" value="isch">
+            <input id="google-search-submit" type="submit" value="Image Search">
+        </form>
     </body>
 </html>
