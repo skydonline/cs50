@@ -22,3 +22,18 @@ def page(request, pagename):
         'html_content': html_content, 
         'pagename':pagename
         })
+
+def search(request):
+    query = request.GET.get('q')
+    page_exists = util.get_entry(query)
+    if page_exists is None:
+        results = util.search_entry(query)
+        return render(request, 'encyclopedia/search.html', {
+            'results': results,
+            'query': query
+        })
+    html_content = markdown.markdown(page_exists)
+    return render(request, 'encyclopedia/wikipedia.html', {
+        'html_content': html_content,
+        'pagename': query
+    })

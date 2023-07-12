@@ -1,5 +1,4 @@
 import re
-
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
@@ -35,3 +34,12 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+    
+def search_entry(query):
+    all_entries = list_entries()
+    results = []
+    for entry_num in range(len(all_entries)):
+        if query.lower() in all_entries[entry_num]:
+            if all_entries[entry_num] not in results:
+                results.append(all_entries[entry_num])
+    return results

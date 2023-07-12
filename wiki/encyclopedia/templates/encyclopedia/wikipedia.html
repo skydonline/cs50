@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ pagename }}</title>
-</head>
-<body>
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
     {{ html_content|safe }}
-</body>
-</html>
+{% endblock %}
