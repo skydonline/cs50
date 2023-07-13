@@ -37,3 +37,32 @@ def search(request):
         'html_content': html_content,
         'pagename': query
     })
+
+def new_page(request):
+    return render(request, 'encyclopedia/new_page.html', {
+    })
+
+def add_page(request):
+    title = request.GET.get('title')
+    page_exists = util.get_entry(title)
+    if page_exists is None:
+        content = request.GET.get('content')
+        util.save_entry(title, content)
+        html_content = markdown.markdown(content)
+        return render(request, 'encyclopedia/wikipedia.html', {
+        'html_content': html_content,
+        'pagename': title
+    })
+    return render(request, 'encyclopedia/exists.html', {
+        'title': title
+    })
+
+def edit_page(request, pagename):
+    if request.method == 'POST':
+        return redirect('encyclopedia/wikipedia.html', pagename=pagename)
+
+    html_content = util.get_entry(pagename)
+    return render(request, 'encyclopedia/edit_page.html', {
+        'html_content':html_content,
+        'pagename':pagename
+    })
