@@ -59,7 +59,8 @@ def add_page(request):
 
 def edit_page(request, pagename):
     if request.method == 'POST':
-        return redirect('encyclopedia/wikipedia.html', pagename=pagename)
+        redirect_url = reverse('encyclopedia:pagename', kwargs={'pagename': pagename})
+        return redirect(redirect_url)
 
     html_content = util.get_entry(pagename)
     return render(request, 'encyclopedia/edit_page.html', {
