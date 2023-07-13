@@ -4,6 +4,7 @@ import os
 from django.shortcuts import redirect
 from . import util
 from django.urls import reverse
+import random
 
 
 def index(request):
@@ -59,6 +60,8 @@ def add_page(request):
 
 def edit_page(request, pagename):
     if request.method == 'POST':
+        content = request.POST.get('content')
+        util.save_entry(pagename, content)
         redirect_url = reverse('encyclopedia:pagename', kwargs={'pagename': pagename})
         return redirect(redirect_url)
 
@@ -67,3 +70,8 @@ def edit_page(request, pagename):
         'html_content':html_content,
         'pagename':pagename
     })
+
+def random_page(request):
+    entries = util.list_entries()
+    random_entry = random.choice(entries)
+    return redirect('encyclopedia:pagename', pagename=random_entry)
