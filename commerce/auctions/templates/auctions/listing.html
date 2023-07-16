@@ -17,7 +17,8 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png">
     {% endif %}
 
-    <h4>${{ price }}</h4>
+    <h4>${{ price|floatformat:2 }}</h4>
+    <h6>Original Price: ${{ og_price|floatformat:2 }}</h6>
 
     {% if user.is_authenticated and for_sale == True %}
         <form method="post" action="{% url 'bid' id %}">

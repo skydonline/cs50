@@ -15,6 +15,7 @@ class Listing(models.Model):
     title = models.CharField(max_length=30)
     details = models.CharField(max_length=300)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings')
+    og_price = models.FloatField(max_length=10)
     price = models.FloatField(max_length=10)
     imageURL = models.CharField(max_length=100, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='listings', blank=True, null=True)

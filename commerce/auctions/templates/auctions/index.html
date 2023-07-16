@@ -4,14 +4,18 @@
 
     {% for listing in listings %}
         <a href="{% url 'listing' listing.id %}">
-            {% if listing.imageURL %}
-            <img src="{{ listing.imageURL }}">
-            {% else %}
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png">
-            {% endif %}
-            <h2>{{ listing.title }}</h2>
-            <h3>Price: ${{ listing.price }}</h3>
-            <h4>Created: {{ listing.date }} </h4>
+            <div class="index-listing">
+                {% if listing.imageURL %}
+                <img class="index-image" src="{{ listing.imageURL }}">
+                {% else %}
+                <img class="index-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png">
+                {% endif %}
+                <div class="index-listing-info">
+                    <h2 class="index-listing-title">{{ listing.title }}</h2>
+                    <h3 class="index-listing-price">Price: ${{ listing.price|floatformat:2 }}</h3>
+                    <h4 class="index-listing-date">Created: {{ listing.date }}</h4>
+                </div>
+            </div>
         </a>
     {% endfor %}
 {% endblock %}

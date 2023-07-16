@@ -3,6 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import update_session_auth_hash
 
 from .models import User, Category, Listing, Bid, Comment
 
@@ -79,6 +81,7 @@ def create_listing(request):
         newListing = Listing(
             title = title,
             details=details,
+            og_price=price,
             price=price,
             imageURL=imageURL,
             seller=user,
@@ -105,6 +108,7 @@ def listing(request, id, bid_success='None'):
         'id': listing.id,
         'title': listing.title,
         'details': listing.details,
+        'og_price':listing.og_price,
         'price': listing.price,
         'category': listing.category,
         'imageURL': listing.imageURL,
@@ -175,3 +179,42 @@ def category_page(request, id):
         'category': Category.objects.get(pk=id),
         'listings':listings
     })
+
+def settings(request, settings_change='None', password_change='None'):
+    user = request.user
+    if request.method == 'POST':
+        username = request.POST['username']
+        first = request.POST['first_name']
+        last = request.POST['last_name']
+        email = request.POST['email']
+
+        user.username = username
+        user.first_name = first
+        user.last_name = last
+        user.email = email
+        user.save()
+        settings_change='True'
+
+    return render(request, 'auctions/settings.html', {
+        'user':user,
+        'password_change':password_change,
+        'settings_change':settings_change
+    })
+
+def change_password(request):
+    user = request.user
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+        if new_password == confirm_password and check_password(current_password, user.password):
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            return redirect('settings', settings_change=None, password_change=True)
+        else:
+            return render(request, 'auctions/change_password.html', {
+                'password_change':False
+            })
+        
+    return render(request, 'auctions/change_password.html')

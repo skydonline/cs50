@@ -1,3 +1,9 @@
+:root {
+    --grey: grey;
+    --font-size-large: 22px;
+    --font-size-med: 18px;
+}
+
 body {
     padding: 10px;
 }
@@ -9,4 +15,34 @@ img {
 a {
     text-decoration: none;
     color: black;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+
+
+/* index page */
+.index-listing {
+    display: flex;
+    align-items: center;
+}
+
+.index-image {
+    margin-right: 20px;
+}
+
+.index-listing-title {
+    font-size: var(--font-size-large);
+}
+
+.index-listing-price {
+    font-size: var(--font-size-med);
+    color: var(--grey);
+}
+
+.index-listing-date {
+    color: var(--grey);
+    font-size: var(--font-size-med);
 }

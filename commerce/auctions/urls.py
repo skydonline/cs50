@@ -15,5 +15,7 @@ urlpatterns = [
     path("close/<int:id>", views.close, name="close"),
     path("comment/<int:id>", views.comment, name="comment"),
     path("categories", views.categories, name="categories"),
-    path("categorypage/<int:id>", views.category_page, name="category_page")
+    path("categorypage/<int:id>", views.category_page, name="category_page"),
+    path("settings/<str:settings_change>/<str:password_change>", views.settings, name="settings"),
+    path("change_password", views.change_password, name='change_password')
 ]

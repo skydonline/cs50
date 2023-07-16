@@ -1,0 +1,41 @@
+{% extends 'auctions/layout.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+
+    {% if password_change == 'True' %}
+        <h2>Password successfully changed.</h2>
+    {% endif %}
+
+    {% if settings_change == 'True' %}
+        <h2>Settings successfully changed.</h2>
+    {% endif %}
+
+    <h1>Settings</h1>
+
+    <form action="{% url 'settings' True None %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username: </label>
+            <input value="{{ user.username }}" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <label for="first_name">First Name: </label>
+            <input value="{{ user.first_name }}" name="first_name" placeholder="First Name" type="text">
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name: </label>
+            <input value="{{ user.last_name }}" name="last_name" placeholder="Last Name" type="text">
+        </div>
+        <div class="form-group">
+            <label for="email">Email: </label>
+            <input value="{{ user.email }}" name="email" placeholder="Email Address" type="email">
+        </div>
+        <button type="submit" class="btn btn-primary">Change Settings</button>
+    </form>
+
+    <a href="{% url 'change_password' %}"><button class="btn btn-secondary">Change Password</button></a>
+
+
+{% endblock %}
