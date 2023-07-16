@@ -1,0 +1,101 @@
+{% extends 'auctions/layout.html' %}
+{% block title %}Listing{% endblock %}
+
+{% block body %}
+
+    {% if bid_success == 'True' %}
+    <h2>Bid successfully placed</h2>
+    {% elif bid_success == 'False' %}
+    <h2>Error: Place a bid higher than the listed amount</h2>
+    {% endif %}
+
+    <h2>Listing: {{ title }}</h2>
+    
+    {% if imageURL %}
+    <img src="{{ imageURL }}">
+    {% else %}
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png">
+    {% endif %}
+
+    <h4>${{ price }}</h4>
+
+    {% if user.is_authenticated and for_sale == True %}
+        <form method="post" action="{% url 'bid' id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="bid_amount">Place Bid:</label>
+                <input name="bid_amount" type="number" placeholder="Bid">
+            </div>
+            <button class="btn btn-success" type="submit">Place Bid</button>
+        </form>
+        <br>
+    {% else %}
+
+    {% endif %}
+    
+    <ul>
+    <li>Details: {{ details }}</li>
+    <li>Category: 
+        {% if category != null %}
+        {{ category }}</li>
+        {% else %}
+        No Category Listed.</li>
+        {% endif %}
+    </ul>
+
+    <!-- bidding and closing listing section -->
+    {% if for_sale %}
+        {% if user.is_authenticated %}
+
+            {% if user == seller %}
+            <form method="post" action="{% url 'close' id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Close Listing</button>
+            </form>
+            {% else %}
+
+                {% if id in user_watchlist %}
+                <form action="{% url 'watchlist' %}" method="post">
+                    {% csrf_token %}
+                    <button name="id" value="{{ id }}" type="submit" class="btn btn-danger">Remove from Watchlist</button>
+                </form>
+                {% else %}
+                <form action="{% url 'watchlist' %}" method="post">
+                    {% csrf_token %}
+                    <button name="id" value="{{ id }}" type="submit" class="btn btn-success">Add to Watchlist</button>
+                </form>
+                {% endif %}
+
+            {% endif %}
+            
+        {% else %}
+        <h3>Sign in to place a bid.</h3>
+        {% endif %}
+    {% else %}
+    <h3>This listing has been closed.</h3>
+    <h3>{{ winner }} has won the auction.</h3>
+    {% endif %}
+
+    <!-- comments section -->
+    <h2>Comments:</h2>
+    <ul>   
+    {% if comments %}
+        {% for comment in comments %}
+        <li>{{ comment.user }}: {{ comment.comment }}</li>
+        {% endfor %}
+    {% else %}
+        <li>There are no comments for this listing.</li>
+    {% endif %}
+    </ul>
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'comment' id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="comment">Place a Comment:</label>
+            <input name="comment" type="text" placeholder="Comment">
+        </div>
+        <button class="btn btn-success" type="submit">Add Comment</button>
+    </form>
+    {% endif %}
+
+{% endblock %}
