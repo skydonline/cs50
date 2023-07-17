@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Hello2</title>
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                // runs following function after form is submitted
+                document.querySelector('form').onsubmit = function() {
+                    
+                    // selects element with id: name
+                    const name = document.querySelector('#name').value; 
+                    alert(`Hello, ${name}!`);
+                }
+
+            })
+
+        </script>
+    </head>
+    <body>
+        <h1>Hello!</h1>
+        <form>
+            <input autofocus id="name" placeholder="Name" type="text">
+            <input type="submit">
+        </form>
+    </body>
+</html>

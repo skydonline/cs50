@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Currency Exchange</title>
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                // when form is submitted
+                document.querySelector('form').onsubmit = function() {    
+
+                    // gets information from this url NOTE: used different URL
+                    fetch('https://open.er-api.com/v6/latest/USD')
+                    .then(response => response.json())     // 'promise', runs this once information is fetched, converts info to json file
+                    .then(data => {
+                        const currency = document.querySelector('#currency').value.toUpperCase(); // get user currency, converts to uppercase
+                        const rate = data.rates[currency];     // gets data key 'rate', then 'currency variable', then its value
+
+                        // ensure user provides valid currency name
+                        if (rate !== undefined) {
+                            document.querySelector('#result').innerHTML = `$1 USD is equal to $${rate.toFixed(3)} ${currency}.`; // .toFixed(3) rounds to 3 decimals
+                        } else {
+                            document.querySelector('#result').innerHTML = `${currency} is not a valid currency.`;
+                        }
+                    })
+                    
+                    // incase there is an error and the API cannot be fetched, prints error to Javascript console
+                    .catch(error => {
+                        console.log('Error: ', error);
+                    });
+                    return false;   // ensure it is not actually submitted
+                }
+            });
+
+        </script>
+    </head>
+    <body>
+        <form>
+            <input id="currency" placeholder="Currency" type="text">
+            <input value="Convert" type="submit">
+        </form>
+
+        <div id="result">
+
+        </div>
+    </body>
+</html>

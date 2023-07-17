@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Tasks</title>
+        <script>            
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                // by default, submit button needs to be disabled using disabled property
+                document.querySelector('#submit').disabled = true;
+
+                // renable submit button once there has been something typed into input field
+                document.querySelector('#task').onkeyup = function () {
+
+                    // ensure task cannot be empty
+                    if (document.querySelector('#task').value.length > 0) {
+                        document.querySelector('#submit').disabled = false;
+                    } else {
+                        document.querySelector('#submit').disabled = true;
+                    }
+                }
+
+
+                // checks for form element, if submitted
+                document.querySelector('form').onsubmit = function () {
+                    
+                    // takes value of input field with id: task
+                    const task = document.querySelector('#task').value;
+
+                    // create new element in HTML, inside element is the task
+                    const li = document.createElement('li');
+                    li.innerHTML = task;
+
+                    // append list element to the unordered list with id: tasks
+                    document.querySelector('#tasks').append(li);
+
+                    // clear the input field after submission
+                    document.querySelector('#task').value = '';
+
+                    // disable submit button again after form has been submitted
+                    document.querySelector('#submit').disabled = true;
+
+                    return false; // don't actually submit the form, do everything client-side
+                }
+            });
+
+        </script>
+    </head>
+    <body>
+        <h1>Tasks</h1>
+        <ul id="tasks">
+
+        </ul>
+        <form>
+            <input id="task" placeholder="New Task" type="text">
+            <input id="submit" type="submit">
+        </form>
+    </body>
+</html>
