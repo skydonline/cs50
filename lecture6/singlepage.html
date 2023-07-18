@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Single Page</title>
+        <style>
+            div {
+                display: none;
+            }
+        </style>
+        <script>
+            // show the page
+            function showPage(page) {
+                // removes any active pages
+                document.querySelectorAll('div').forEach(function(div) {
+                    div.style.display = 'none';
+                })
+                document.querySelector(`#${page}`).style.display = 'block'; // adds the page
+            }
+
+            // allows respective button click to show that page
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('button').forEach(button => { 
+                    button.onclick = function() {
+                        showPage(this.dataset.page)
+                    }
+                });
+            });
+            
+
+            /*
+            
+            saves previous states
+            window.onpopstate = function(event) {
+                console.log(event.state.section);
+                showSection(event.state.section);
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('button').forEach(button => {
+                    button.onclick = function() {
+                        const section = this.dataset.section;
+                        history.pushState({section: section}, "", `section${section}`);         adds new element to the browsing history, inputs in URL
+                        showSection (section);
+                    };
+                });
+            });
+            */
+        </script>
+    </head>
+    <body>
+        <button data-page="page1">Page 1</button>
+        <button data-page="page2">Page 2</button>
+        <button data-page="page3">Page 3</button>
+        <div id="page1">
+            <h1>This is page 1</h1>
+        </div>
+        <div id="page2">
+            <h1>This is page 2</h1>
+        </div>
+        <div id="page3">
+            <h1>This is page 3</h1>
+        </div>
+    </body>
+</html>

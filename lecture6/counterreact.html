@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+        <title>Counter React</title>
+    </head>
+    <body>
+        <div id="app"></div>
+
+        <script type="text/babel">
+
+            function App() { 
+
+                // returns 2 things: count (state variable) and function for changing that state
+                const [count, setCount] = React.useState(0);    // accepts 0 as input
+
+
+                // update count
+                function updateCount() {
+                    setCount(count + 1);    // setCount changes state, (count + 1) is what new state is
+                }
+
+
+                // {count} is variable
+                // {updateCount} is calling the function
+                return (
+                    <div>
+                        <div>{count}</div>
+                        <button onClick={updateCount}>Count</button>
+                    </div>
+                );
+            }
+
+            ReactDOM.render(<App />, document.querySelector('#app')); // renders app function into element with id: app
+        </script>
+    </body>
+</html>

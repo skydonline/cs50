@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <style>
+            #app {
+                text-align: center;
+                font-family: sans-serif;
+            }
+
+            #problem {
+                font-size: 72px;
+            }
+
+            .incorrect {
+                color: red;
+            }
+            
+            #winner {
+                font-size: 72px;
+                color: green;
+            }
+        </style>
+
+        <title>Addition</title>
+    </head>
+    <body>
+        <div id="app"></div>
+
+        <script type="text/babel">
+
+            function App() { 
+
+                // create object that has multiple items inside
+                const [state, setState] = React.useState({
+                    num1: 1,
+                    num2: 2,
+                    response: "",
+                    score: 0,
+                    incorrect: false
+                })
+
+                // accepts event as argument
+                function updateResponse(event) {
+                    setState({ 
+                        ...state,   // keep everything else the same
+                        response: event.target.value    // only update the response value
+                    });
+                }
+
+                function inputKeyPress(event) {
+                    if (event.key === "Enter") {    // see if user pressed Enter key
+                        const answer = parseInt(state.response)     // parseInt changes string to integer
+                        if (state.num1 + state.num2 === answer) {    // check the addition
+                            
+                            // increase score by 1
+                            setState({
+                                ...state,
+                                num1: Math.ceil(Math.random() * 10),     // ceil rounds up, random takes number bw 1-10
+                                num2: Math.ceil(Math.random() * 10),
+                                score: state.score + 1,
+                                response: "",    // clears input field
+                                incorrect: false
+                            });
+                        } else {
+
+                            // decrease score by 1
+                            setState({
+                                ...state,
+                                score: state.score - 1,
+                                response: "",
+                                incorrect: true
+                            });
+                        }
+                    }
+                }
+
+                // return win screen if score is 10
+                if (state.score === 10) {
+                    return (
+                        <div id="winner">
+                            You won!
+                        </div>
+                    )
+                }
+
+                // calls objects from the state object
+                // onChange calls updateResponse function when user types in input field
+                // onKeyPress calls inputKeyPress function when a key is pressed
+
+                // {state.incorrect ? "incorrect" : ""}
+                // if state.incorrect is true, give class of "incorrect", if false, give class of ""
+                return (
+                    <div>
+                        <div className={state.incorrect ? "incorrect" : ""} id="problem">{state.num1} + {state.num2}</div>
+                        <input autoFocus={true} onKeyPress={inputKeyPress} onChange={updateResponse} value={state.response} />
+                        <div>Score: {state.score}</div>
+                    </div>
+                );
+                
+            }
+
+            ReactDOM.render(<App />, document.querySelector('#app')); // renders app function into element with id: app
+        </script>
+    </body>
+</html>
