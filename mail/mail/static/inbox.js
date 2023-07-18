@@ -95,18 +95,22 @@ function display_email(email, mailbox) {
   // truncate email subject line
   const subject = truncateText(email.subject, 55);
   
-  
+
   mailContainer.innerHTML = 
   `
-    <p class='mailText mailReciever'>${reciever}</p>
-    <p class='mailText mailSubject'>${subject}</p>
-    <p class='mailText mailTime'>${email.timestamp}</p>
+  <p class='mailText mailReciever'>${reciever}</p>
+  <p class='mailText mailSubject'>${subject}</p>
+  <p class='mailText mailTime'>${email.timestamp}</p>
   `
+
+  if (email.read === true) {
+    mailContainer.style.backgroundColor = 'lightgrey';
+  }
 
   document.querySelector('#emails-view').appendChild(mailContainer);
 
   mailContainer.addEventListener('click', function() {
-    load_email(email.id);
+    load_email(email);
   });
 };
 
@@ -118,8 +122,8 @@ function truncateText(text, limit) {
   }
 };
 
-function load_email(id) {
-  fetch(`/emails/${id}`)
+function load_email(email) {
+  fetch(`/emails/${email.id}`)
   .then(response => response.json())
   .then(email => {
     document.querySelector('#emails-view').style.display = 'none';
@@ -147,6 +151,32 @@ function load_email(id) {
     <p>${email.body}</p>
     `;
 
-    
+    document.querySelector('#archive').addEventListener('click', () => archive(email));
   });
-}
+
+  fetch(`/emails/${email.id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      read: true
+    })
+  });
+};
+
+function archive(email) {
+  if (email.archived === false) {
+    fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        archived: true
+      })
+    });
+  } else {
+    fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        archived: false
+      })
+    });
+  }
+  load_mailbox('inbox');
+};
