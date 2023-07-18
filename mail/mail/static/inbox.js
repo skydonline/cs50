@@ -81,8 +81,10 @@ function load_mailbox(mailbox) {
 }
 
 function display_email(email, mailbox) {
+  const mailContainer = document.createElement('div');
+  mailContainer.className = 'singleEmail';
 
-  // identify reciever name
+  // reciever
   let reciever;
   if (mailbox === 'inbox') {
     reciever = truncateText(email.sender, 15);
@@ -90,24 +92,21 @@ function display_email(email, mailbox) {
     reciever = truncateText(email.recipients, 15);
   }
 
-  // truncate email subject
+  // truncate email subject line
   const subject = truncateText(email.subject, 55);
-
-  const emailView = document.querySelector('#emails-view');
-  emailView.insertAdjacentHTML('beforeend', 
+  
+  
+  mailContainer.innerHTML = 
   `
-  <div class="singleEmail">
     <p class='mailText mailReciever'>${reciever}</p>
     <p class='mailText mailSubject'>${subject}</p>
     <p class='mailText mailTime'>${email.timestamp}</p>
-  </div>
-  `);
+  `
 
-  const emailElements = document.querySelectorAll(".singleEmail");
-  emailElements.forEach(email => {
-    addEventListener('click', function() {
-      load_email(email.id);
-    });
+  document.querySelector('#emails-view').appendChild(mailContainer);
+
+  mailContainer.addEventListener('click', function() {
+    load_email(email.id);
   });
 };
 
@@ -148,6 +147,6 @@ function load_email(id) {
     <p>${email.body}</p>
     `;
 
-
+    
   });
 }
