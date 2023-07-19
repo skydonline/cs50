@@ -1,0 +1,26 @@
+{% extends 'network/layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+    <div id="profile-header">
+        <h1>{{ user_profile.username }}</h1>
+        <p>{{ posts_count }}</p>
+        <p>{{ following_count }}</p>
+        <p>{{ followers_count }}</p>
+    </div>
+
+    {% if user.id != user_profile.id %}
+        {% if is_following %}
+        <h3>Unfollow</h3>
+        {% else %}
+        <h3>Follow</h3>
+        {% endif %}
+    {% endif %}
+
+    <div>  
+        {% for post in posts %}
+            <h1>{{ post.content }}</h1>
+        {% endfor %}
+    </div>
+{% endblock %}

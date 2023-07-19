@@ -1,0 +1,112 @@
+{% extends "network/layout.html" %}
+{% block body %}
+<script>
+    // get userID
+    let user
+    function getUser() {
+        currentUser = document.querySelector('#current-user');
+        user = currentUser.dataset.user;
+        console.log(`Current User: ${user}`);
+    }
+    document.addEventListener('DOMContentLoaded', () => getUser());   // get userID
+
+
+
+    // initalize current post id and step
+    let current = 0;
+    const step = 10;
+    let hasMorePosts = true;
+
+    function fetchPosts() {
+        // prevent fetching if there is no more posts
+        if (!hasMorePosts) {
+            return console.log("Error: There are no more posts.");
+        };
+
+        fetch(`/api/all_posts/?current=${current}&step=${step}`)
+        .then(response => response.json())
+        .then(data => {
+            const posts = data.posts;
+            
+            // if no more posts, set the flag to false
+            if (posts.length === 0) {
+                hasMorePosts = false;
+                return;
+            }
+
+            // creates a post in HTML for each post
+            posts.forEach(post => {
+
+                const postContainer = document.createElement('div');
+                postContainer.className = 'post_container';
+        
+                postContainer.innerHTML = 
+                `
+                    <p class="post_element post_user">${post.user}</p>
+                    <p class="post_element post_content">${post.content}</p>
+                    <p class="post_element post_date">${post.date}</p>
+                    <p class="post_element post_likes">❤️ ${post.likes}</p>
+                    <p class="post_element post_comment">Comment</p>
+                `;
+
+                const postContent = postContainer.querySelector('.post_content');
+
+                // if logged in user is current user, add edit button
+                if (post.user == user) {
+                    const edit = document.createElement('div');
+                    edit.innerHTML = 
+                    `
+                    <button class="post_element post_edit btn btn-primary">Edit</button>
+                    <button class="post_element post_save btn btn-primary">Save</button>
+                    `;
+
+                    // add edit functionality
+                    edit.addEventListener('click', () => {
+                        postContent.innerHTML = `<textarea class="post_element post_textarea">${post.content}</textarea>`;
+                        document.querySelector('.post_edit').style.display = 'none';
+                        document.querySelector('.post_save').style.display = 'block';
+                        document.querySelector('.post_textarea').style.display = 'block';
+
+                        const saveButton = postContainer.querySelector('.post_save');
+
+                        saveButton.addEventListener('click', () => {
+                            const editedContent = document.querySelector('.post_textarea').value;
+                            document.querySelector('.post_edit').style.display = 'block';
+                            document.querySelector('.post_save').style.display = 'none';
+                            document.querySelector('.post_textarea').style.display = 'none';
+                            console.log("edit");
+                            console.log(editedContent);
+
+        // Now you have the edited content. You can send it to the server using an API call.
+        // Example: sendEditedContentToServer(editedContent);
+        // Replace "sendEditedContentToServer" with your API call function.
+                        });
+
+                        console.log("hide");
+                    });
+
+                    postContainer.appendChild(edit);
+                }
+                
+                document.querySelector('#all_posts').appendChild(postContainer);
+            });
+
+            current += step;    // increment to fetch next batch of posts
+        })
+        .catch(error => console.error('Error fetching data:', error));  // incase there is another error, print to console
+    }
+
+    // if user reaches bottom of the page, load more posts
+    window.onscroll = () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            fetchPosts();
+        }
+    };
+    document.addEventListener('DOMContentLoaded', () => fetchPosts());  // load inital posts
+</script>
+
+    <div id="current-user" data-user="{{ request.user }}"></div>
+
+    <div id="all_posts"></div>
+    <div id="observerElement"></div>
+{% endblock %}
