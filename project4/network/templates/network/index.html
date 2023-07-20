@@ -39,27 +39,29 @@
 
                 const postContainer = document.createElement('div');
                 postContainer.className = 'post_container';
+                postContainer.setAttribute('name',`${post.id}`);
         
                 postContainer.innerHTML = 
                 `
                     <p class="post_element post_user">${post.user}</p>
+                    <div class="edit_container">
                     <p class="post_element post_content">${post.content}</p>
                     <p class="post_element post_date">${post.date}</p>
                     <p class="post_element post_likes">❤️ ${post.likes}</p>
                     <p class="post_element post_comment">Comment</p>
+                    <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary">Edit</button>
+                    </div>
+                    <div class="save_container">
+                    <textarea class="post_element post_textarea">${post.content}</textarea>
+                    <br>
+                    <button onclick="save(this.parentNode.parentNode)" class="post_element post_save btn btn-primary">Save</button>
+                    </div>
                 `;
 
 
                 // if logged in user is current user, add edit button
-                if (post.user == user) {
-                    const edit = document.createElement('div');
-                    edit.innerHTML = 
-                    `
-                    <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary">Edit</button>
-                    <textarea class="post_element post_textarea">${post.content}</textarea>
-                    <button onclick="save(this.parentNode.parentNode)" class="post_element post_save btn btn-primary">Save</button>
-                    `;
-                    postContainer.appendChild(edit);
+                if (post.user == user) { 
+                    postContainer.querySelector('.post_edit').style.display = 'block';
                 }
                 
                 document.querySelector('#all_posts').appendChild(postContainer);
@@ -83,15 +85,12 @@
     function save(container) {
         const editedContent = container.querySelector('.post_textarea').value;
 
-        container.querySelector('.post_content').style.display = 'block';
-        container.querySelector('.post_date').style.display = 'block';
-        container.querySelector('.post_likes').style.display = 'block';
-        container.querySelector('.post_comment').style.display = 'block';
-        container.querySelector('.post_edit').style.display = 'block';
-        container.querySelector('.post_save').style.display = 'none';
-        container.querySelector('.post_textarea').style.display = 'none';
+        container.querySelector('.edit_container').style.display = 'block';
+        container.querySelector('.save_container').style.display = 'none';
 
         container.querySelector('.post_content').textContent = editedContent;
+
+        
     };
 
 
@@ -99,13 +98,8 @@
     function edit(container) {
         const postContent = container.querySelector('.post_content').textContent;
 
-        container.querySelector('.post_content').style.display = 'none';
-        container.querySelector('.post_date').style.display = 'none';
-        container.querySelector('.post_likes').style.display = 'none';
-        container.querySelector('.post_comment').style.display = 'none';
-        container.querySelector('.post_edit').style.display = 'none';
-        container.querySelector('.post_save').style.display = 'block';
-        container.querySelector('.post_textarea').style.display = 'block';
+        container.querySelector('.edit_container').style.display = 'none';
+        container.querySelector('.save_container').style.display = 'block';
 
         container.querySelector('.post_textarea').value = postContent;
     };

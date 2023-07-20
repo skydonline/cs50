@@ -58,18 +58,21 @@ html {
 }
 
 .post_edit {
+    display: none;
     margin-bottom: 10px;
     font-size: 12px;
 }
 
 .post_save {
-    display: none;
     margin-bottom: 10px;
     font-size: 12px;
 }
 
 .post_textarea {
-    display: none;
     margin-bottom: 10px;
     font-size: 12px;
+}
+
+.save_container {
+    display: none;
 }
