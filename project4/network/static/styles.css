@@ -76,3 +76,11 @@ html {
 .save_container {
     display: none;
 }
+
+#follow_button {
+    display: block;
+}
+
+#unfollow_button {
+    display: block;
+}

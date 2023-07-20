@@ -68,6 +68,7 @@ def register(request):
     else:
         return render(request, "network/register.html")
     
+
 def all_posts_api(request):
     current = request.GET.get('current', 0)
     step = request.GET.get('step', 10)
@@ -88,6 +89,7 @@ def all_posts_api(request):
         ]
     }
     return JsonResponse(data)
+
 
 @csrf_exempt
 def post_api(request, postID):
@@ -117,6 +119,7 @@ def post_api(request, postID):
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+
 def new_post(request):
     if request.method == 'POST':
         user = request.user
@@ -125,6 +128,7 @@ def new_post(request):
         new_post.save()
         return redirect('index')
     return render(request, 'network/newpost.html')
+
 
 def profile(request, user_profile):
     user = request.user
@@ -146,6 +150,58 @@ def profile(request, user_profile):
         'followers_count':followers_count,
         'is_following':is_following
     })
+
+@csrf_exempt
+def followers(request, profile):
+    try:
+        user = User.objects.get(id=profile)
+    except User.DoesNotExist:
+        # Handle the case where the user does not exist
+        return JsonResponse({'error': 'User not found'}, status=404)
+    
+    # gets followers
+    if request.method == 'GET':
+        followers = user.followers.all()    
+        data = {
+            'followers': [follower.username for follower in followers]
+        }
+        return JsonResponse(data)
+    
+    # adds or removes followers
+    elif request.method == 'PUT':
+        data = json.loads(request.body)
+        profile_username = data.get('following')
+        action = data.get('action')
+
+        user = request.user  # Assuming you are using Django's built-in User model
+
+        if action == 'add':
+            following_user = User.objects.get(username=profile_username)
+            user.following.add(following_user)
+            response_data = {'message': 'Follower added successfully.'}
+
+        elif action == 'remove':
+            following_user = User.objects.get(username=profile_username)
+            user.following.remove(following_user)
+            response_data = {'message': 'Follower removed successfully.'}
+
+        user.save()
+        return JsonResponse(response_data)
+            
+@csrf_exempt
+def following(request, profile):
+    try:
+        user = User.objects.get(id=profile)
+    except User.DoesNotExist:
+        # Handle the case where the user does not exist
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+    followings = user.following.all()    
+    data = {
+        'following': [following.username for following in followings]
+    }
+    return JsonResponse(data)
+
 
 def following_posts(request):
     user = request.user

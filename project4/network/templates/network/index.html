@@ -1,17 +1,6 @@
 {% extends "network/layout.html" %}
 {% block body %}
 <script>
-    // get userID
-    let user
-    function getUser() {
-        currentUser = document.querySelector('#current-user');
-        user = currentUser.dataset.user;
-        console.log(`Current User: ${user}`);
-    }
-    document.addEventListener('DOMContentLoaded', () => getUser());   // get userID
-
-
-
     // initalize current post id and step
     let current = 0;
     const step = 10;
@@ -61,7 +50,7 @@
 
 
                 // if logged in user is current user, add edit button
-                if (post.user == user) { 
+                if (post.user == currentUsername) { 
                     postContainer.querySelector('.post_edit').style.display = 'block';
                 }
                 
@@ -126,8 +115,6 @@
         window.location.href = `http://127.0.0.1:8000/profile/${userID}`;
     };
 </script>
-
-    <div id="current-user" data-user="{{ request.user }}"></div>
 
     <div id="all_posts"></div>
     <div id="observerElement"></div>

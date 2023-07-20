@@ -3,20 +3,99 @@
 {% block title %}Profile{% endblock %}
 
 {% block body %}
+<script>
+    let is_following;
+    let profile;
+    let profileUsername;    // logged in user username
+    let firstVisit = true;
+
+    // see if user is following or not
+    function follow() {
+
+        fetch(`/api/following/${currentUserID}`)
+        .then(response => response.json())
+        .then(following => {
+            is_following = following.following;     // people that logged in user is following
+            profile = document.querySelector('#username');
+            profileUsername = profile.textContent;  // profile view username
+
+
+            // checks if logged in user is following viewed profile
+            if (is_following.includes(profileUsername)) {
+                // hide follow button if not following
+                const followButton = document.querySelector('#follow_button');
+                followButton.style.display = 'none';
+
+                // prevents changing following status on first visit
+                if (firstVisit == true) {
+                    firstVisit = false;
+                    return
+                }
+
+                // removes follower
+                fetch(`/api/following/${currentUserID}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        following: profileUsername,
+                        action: 'remove'
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result); // You can handle the API response here
+                })
+                .catch(error => {
+                console.log("Error: Unable to add follower.", error);
+                });
+
+
+            } else {
+                // hide unfollow button if not following
+                const unfollowButton = document.querySelector('#unfollow_button');
+                unfollowButton.style.display = 'none';
+
+                // prevents changing following status on first visit
+                if (firstVisit == true) {
+                    firstVisit = false;
+                    return
+                }
+
+                // adds follower
+                fetch(`/api/following/${currentUserID}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        following: profileUsername,
+                        action: 'add'
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result); // You can handle the API response here
+                })
+                .catch(error => {
+                console.log("Error: Unable to remove follower.", error);
+                });
+            }
+            console.log(is_following);
+        });
+        
+    };
+
+    document.addEventListener('DOMContentLoaded', follow);
+
+</script>
+
     <div id="profile-header">
-        <h1>{{ user_profile.username }}</h1>
+        <h1 id="username">{{ user_profile.username }}</h1>
         <p>{{ posts_count }}</p>
         <p>{{ following_count }}</p>
         <p>{{ followers_count }}</p>
     </div>
 
-    {% if user.id != user_profile.id %}
-        {% if is_following %}
-        <h3>Unfollow</h3>
-        {% else %}
-        <h3>Follow</h3>
-        {% endif %}
-    {% endif %}
+    <div id="following">
+        <p id="unfollow_button" onclick=follow()>Unfollow</p>
+        <p id="follow_button" onclick=follow()>Follow</p>
+    </div>
 
     <div>  
         {% for post in posts %}
