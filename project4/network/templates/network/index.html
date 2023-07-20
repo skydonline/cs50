@@ -39,11 +39,12 @@
 
                 const postContainer = document.createElement('div');
                 postContainer.className = 'post_container';
-                postContainer.setAttribute('name',`${post.id}`);
+                postContainer.dataset.postid = post.id;
+                postContainer.dataset.userid = post.userID;
         
                 postContainer.innerHTML = 
                 `
-                    <p class="post_element post_user">${post.user}</p>
+                    <p onclick="userProfile(this.parentNode)" class="post_element post_user">${post.user}</p>
                     <div class="edit_container">
                     <p class="post_element post_content">${post.content}</p>
                     <p class="post_element post_date">${post.date}</p>
@@ -90,7 +91,7 @@
 
         container.querySelector('.post_content').textContent = editedContent;
 
-        const postID = container.getAttribute('name');
+        const postID = container.dataset.postid;
 
         // update database
         fetch(`/api/post/${postID}`, {
@@ -116,6 +117,13 @@
         container.querySelector('.save_container').style.display = 'block';
 
         container.querySelector('.post_textarea').value = postContent;
+    };
+
+
+    // user profile
+    function userProfile(container) {
+        const userID = container.dataset.userid;
+        window.location.href = `http://127.0.0.1:8000/profile/${userID}`;
     };
 </script>
 
