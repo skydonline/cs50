@@ -81,6 +81,8 @@
 
     // save post function
     function save(container) {
+        const editedContent = container.querySelector('.post_textarea').value;
+
 
         container.querySelector('.post_content').style.display = 'block';
         container.querySelector('.post_date').style.display = 'block';
@@ -89,6 +91,8 @@
         container.querySelector('.post_edit').style.display = 'block';
         container.querySelector('.post_save').style.display = 'none';
         container.querySelector('.post_textarea').style.display = 'none';
+
+        container.querySelector('.post_content').textContent = editedContent;
     };
 
 
