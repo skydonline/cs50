@@ -49,42 +49,16 @@
                     <p class="post_element post_comment">Comment</p>
                 `;
 
-                const postContent = postContainer.querySelector('.post_content');
 
                 // if logged in user is current user, add edit button
                 if (post.user == user) {
                     const edit = document.createElement('div');
                     edit.innerHTML = 
                     `
-                    <button class="post_element post_edit btn btn-primary">Edit</button>
-                    <button class="post_element post_save btn btn-primary">Save</button>
+                    <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary">Edit</button>
+                    <textarea class="post_element post_textarea">${post.content}</textarea>
+                    <button onclick="save(this.parentNode.parentNode)" class="post_element post_save btn btn-primary">Save</button>
                     `;
-
-                    // add edit functionality
-                    edit.addEventListener('click', () => {
-                        postContent.innerHTML = `<textarea class="post_element post_textarea">${post.content}</textarea>`;
-                        document.querySelector('.post_edit').style.display = 'none';
-                        document.querySelector('.post_save').style.display = 'block';
-                        document.querySelector('.post_textarea').style.display = 'block';
-
-                        const saveButton = postContainer.querySelector('.post_save');
-
-                        saveButton.addEventListener('click', () => {
-                            const editedContent = document.querySelector('.post_textarea').value;
-                            document.querySelector('.post_edit').style.display = 'block';
-                            document.querySelector('.post_save').style.display = 'none';
-                            document.querySelector('.post_textarea').style.display = 'none';
-                            console.log("edit");
-                            console.log(editedContent);
-
-        // Now you have the edited content. You can send it to the server using an API call.
-        // Example: sendEditedContentToServer(editedContent);
-        // Replace "sendEditedContentToServer" with your API call function.
-                        });
-
-                        console.log("hide");
-                    });
-
                     postContainer.appendChild(edit);
                 }
                 
@@ -94,7 +68,7 @@
             current += step;    // increment to fetch next batch of posts
         })
         .catch(error => console.error('Error fetching data:', error));  // incase there is another error, print to console
-    }
+    };
 
     // if user reaches bottom of the page, load more posts
     window.onscroll = () => {
@@ -103,6 +77,35 @@
         }
     };
     document.addEventListener('DOMContentLoaded', () => fetchPosts());  // load inital posts
+
+
+    // save post function
+    function save(container) {
+
+        container.querySelector('.post_content').style.display = 'block';
+        container.querySelector('.post_date').style.display = 'block';
+        container.querySelector('.post_likes').style.display = 'block';
+        container.querySelector('.post_comment').style.display = 'block';
+        container.querySelector('.post_edit').style.display = 'block';
+        container.querySelector('.post_save').style.display = 'none';
+        container.querySelector('.post_textarea').style.display = 'none';
+    };
+
+
+    // edit post function
+    function edit(container) {
+        const postContent = container.querySelector('.post_content').textContent;
+
+        container.querySelector('.post_content').style.display = 'none';
+        container.querySelector('.post_date').style.display = 'none';
+        container.querySelector('.post_likes').style.display = 'none';
+        container.querySelector('.post_comment').style.display = 'none';
+        container.querySelector('.post_edit').style.display = 'none';
+        container.querySelector('.post_save').style.display = 'block';
+        container.querySelector('.post_textarea').style.display = 'block';
+
+        container.querySelector('.post_textarea').value = postContent;
+    };
 </script>
 
     <div id="current-user" data-user="{{ request.user }}"></div>
