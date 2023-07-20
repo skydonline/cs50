@@ -77,18 +77,43 @@
 
     <div id="profile-header">
         <h1 id="username">{{ user_profile.username }}</h1>
-        <p>{{ posts_count }}</p>
-        <p>{{ following_count }}</p>
-        <p>{{ followers_count }}</p>
+            <table id="profile-table">
+                <tbody>
+                    <tr>
+                        <td class="profile-stats">{{ posts_count }}</td>
+                        <td class="profile-stats">{{ following_count }}</td>
+                        <td class="profile-stats">{{ followers_count }}</td>
+                    </tr>
+                    <tr>
+                        <td class="profile-stats">Posts</td>
+                        <td class="profile-stats">Following</td>
+                        <td class="profile-stats">Followers</td>
+                    </tr>
+                </tbody>
+            </table>
     </div>
 
     <div id="following">
         <p id="follow_button" onclick=follow()>Follow</p>
     </div>
 
-    <div>  
-        {% for post in posts %}
-            <h1>{{ post.content }}</h1>
-        {% endfor %}
-    </div>
+    
+        {% if posts %}  
+        <div id="posts-content">
+            {% for post in posts %}
+                <div class="ind-post">
+                    <p class="post-info">{{ post.content }}</p>
+                    <p class="post-info">❤️ {{ post.likes }}</p>
+                    <p class="post-info">{{ post.date }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-posts">
+            <h1>No Posts Yet</h1>
+        </div>
+        <div class="no-posts">
+            <img id="no-posts-image" src="https://pbs.twimg.com/media/CidJXBuUUAEgAYu.jpg">
+        </div>
+        {% endif %}
 {% endblock %}
