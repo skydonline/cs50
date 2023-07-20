@@ -19,18 +19,24 @@
             profile = document.querySelector('#username');
             profileUsername = profile.textContent;  // profile view username
 
+            // create constants for follow buttons
+            const followButton = document.querySelector('#follow_button');
+
+            // prevents changing following status on first visit
+            if (firstVisit == true) {
+                    firstVisit = false;
+                    if (is_following.includes(profileUsername)) {
+                        followButton.innerHTML = 'Unfollow';
+                    } else {
+                        followButton.innerHTML = 'Follow';
+                    }
+                    return  // breaks out of function
+            }
+
 
             // checks if logged in user is following viewed profile
             if (is_following.includes(profileUsername)) {
-                // hide follow button if not following
-                const followButton = document.querySelector('#follow_button');
-                followButton.style.display = 'none';
-
-                // prevents changing following status on first visit
-                if (firstVisit == true) {
-                    firstVisit = false;
-                    return
-                }
+                followButton.innerHTML = 'Follow';
 
                 // removes follower
                 fetch(`/api/following/${currentUserID}`, {
@@ -39,26 +45,11 @@
                         following: profileUsername,
                         action: 'remove'
                     })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result); // You can handle the API response here
-                })
-                .catch(error => {
-                console.log("Error: Unable to add follower.", error);
                 });
 
-
             } else {
-                // hide unfollow button if not following
-                const unfollowButton = document.querySelector('#unfollow_button');
-                unfollowButton.style.display = 'none';
-
-                // prevents changing following status on first visit
-                if (firstVisit == true) {
-                    firstVisit = false;
-                    return
-                }
+                // hide follow button, show unfollow button
+                followButton.innerHTML = 'Unfollow';
 
                 // adds follower
                 fetch(`/api/following/${currentUserID}`, {
@@ -67,18 +58,9 @@
                         following: profileUsername,
                         action: 'add'
                     })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result); // You can handle the API response here
-                })
-                .catch(error => {
-                console.log("Error: Unable to remove follower.", error);
                 });
-            }
-            console.log(is_following);
+            };
         });
-        
     };
 
     document.addEventListener('DOMContentLoaded', follow);
@@ -93,7 +75,6 @@
     </div>
 
     <div id="following">
-        <p id="unfollow_button" onclick=follow()>Unfollow</p>
         <p id="follow_button" onclick=follow()>Follow</p>
     </div>
 

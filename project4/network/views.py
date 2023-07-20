@@ -153,11 +153,7 @@ def profile(request, user_profile):
 
 @csrf_exempt
 def followers(request, profile):
-    try:
-        user = User.objects.get(id=profile)
-    except User.DoesNotExist:
-        # Handle the case where the user does not exist
-        return JsonResponse({'error': 'User not found'}, status=404)
+    user = User.objects.get(id=profile)
     
     # gets followers
     if request.method == 'GET':
@@ -170,23 +166,17 @@ def followers(request, profile):
     # adds or removes followers
     elif request.method == 'PUT':
         data = json.loads(request.body)
-        profile_username = data.get('following')
+        user_change = data.get('following')
         action = data.get('action')
 
-        user = request.user  # Assuming you are using Django's built-in User model
-
         if action == 'add':
-            following_user = User.objects.get(username=profile_username)
-            user.following.add(following_user)
-            response_data = {'message': 'Follower added successfully.'}
+            user.following.add(user_change)
 
         elif action == 'remove':
-            following_user = User.objects.get(username=profile_username)
-            user.following.remove(following_user)
-            response_data = {'message': 'Follower removed successfully.'}
+            user.following.remove(user_change)
 
         user.save()
-        return JsonResponse(response_data)
+        return JsonResponse({'Successfully updated followers.'})
             
 @csrf_exempt
 def following(request, profile):
