@@ -117,7 +117,7 @@ def post_api(request, postID):
 
             return JsonResponse(response_data)
 
-    return JsonResponse({"error": "Invalid request"}, status=400)
+    return JsonResponse({"Error: Invalid request"}, status=400)
 
 
 def new_post(request):
@@ -162,35 +162,33 @@ def followers(request, profile):
             'followers': [follower.username for follower in followers]
         }
         return JsonResponse(data)
+            
+@csrf_exempt
+def following(request, profile):
+    user = User.objects.get(id=profile)
+
+    if request.method == 'GET':
+        followings = user.following.all()    
+        data = {
+            'following': [following.username for following in followings]
+        }
+        return JsonResponse(data)
     
     # adds or removes followers
     elif request.method == 'PUT':
         data = json.loads(request.body)
         user_change = data.get('following')
+        userID_change = User.objects.get(username=user_change)
         action = data.get('action')
 
         if action == 'add':
-            user.following.add(user_change)
+            user.following.add(userID_change)
 
         elif action == 'remove':
-            user.following.remove(user_change)
+            user.following.remove(userID_change)
 
         user.save()
-        return JsonResponse({'Successfully updated followers.'})
-            
-@csrf_exempt
-def following(request, profile):
-    try:
-        user = User.objects.get(id=profile)
-    except User.DoesNotExist:
-        # Handle the case where the user does not exist
-        return JsonResponse({'error': 'User not found'}, status=404)
-
-    followings = user.following.all()    
-    data = {
-        'following': [following.username for following in followings]
-    }
-    return JsonResponse(data)
+        return JsonResponse('Successfully updated followers.', safe=False)
 
 
 def following_posts(request):

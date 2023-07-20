@@ -45,7 +45,11 @@
                         following: profileUsername,
                         action: 'remove'
                     })
-                });
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                })
 
             } else {
                 // hide follow button, show unfollow button
@@ -58,7 +62,11 @@
                         following: profileUsername,
                         action: 'add'
                     })
-                });
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                })
             };
         });
     };
