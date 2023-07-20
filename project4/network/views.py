@@ -79,6 +79,7 @@ def all_posts_api(request):
             {
                 'id': post.id,
                 'user': post.user.username,
+                'userID': post.user.id,
                 'content': post.content,
                 'likes': post.likes,
                 'date': post.get_formatted_date(),
@@ -87,6 +88,34 @@ def all_posts_api(request):
         ]
     }
     return JsonResponse(data)
+
+@csrf_exempt
+def post_api(request, postID):
+    try:
+        post = Post.objects.get(id=postID)
+    except Post.DoesNotExist:
+        return JsonResponse({"Error: Post was not found."}, status=404)
+
+    # updates current post
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        new_content = data.get("content")
+
+        if new_content:
+            post.content = new_content
+            post.save()
+
+            response_data = {
+                "id": post.id,
+                "user": post.user.username,
+                "content": post.content,
+                "likes": post.likes,
+                "date": post.get_formatted_date(),
+            }
+
+            return JsonResponse(response_data)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 def new_post(request):
     if request.method == 'POST':

@@ -14,4 +14,5 @@ urlpatterns = [
 
     #APIs
     path('api/all_posts/', views.all_posts_api, name='all_posts_api'),
+    path('api/post/<int:postID>', views.post_api, name="post_update"),
 ]
