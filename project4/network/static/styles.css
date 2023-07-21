@@ -2,34 +2,13 @@ html {
     font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-#new_post_section {
-    margin: 0;
-    padding-left: 20px;
-}
-
-#new_post_box {
-    padding: 20px 0px 20px 20px;
-    border: 2px solid lightgrey;
-    margin-right: 20px;
-    border-radius: 10px;
-}
-
-#new_post_header {
-    font-size: 30px;
-}
-
-#new_post_text {
-    height: 50vh;
-    width: 75vw;
-    display: block;
-}
-
-#create_post_button {
-    margin-top: 10px;
-}
 
 
 /* home index */
+#observerElement {
+    margin-bottom: 40px;
+}
+
 .post_container {
     min-height: 60px;
     margin: 10px 20px 10px 20px;
@@ -47,8 +26,16 @@ html {
     padding-top: 10px;
 }
 
+.post_user:hover {
+    cursor: pointer;
+}
+
 .post_content {
     display: block;
+}
+
+.post_date {
+    margin-top: 10px;
 }
 
 .post_text {
@@ -80,13 +67,80 @@ html {
 }
 
 
-/* profiles */
-#follow_button {
+
+/* settings */
+#settings-icon {
+    right: 10px;
+    position: absolute;
+    top: 6px;
+    height: 40px;
+}
+
+#settings-title {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+#settings-form, #change-password-button {
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+#change-password-title {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+#change-password-form {
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+
+
+/* new post */
+#new_post_section {
+    margin: 0;
+    padding-left: 20px;
+}
+
+#new_post_box {
+    padding: 20px 0px 20px 20px;
+    border: 2px solid lightgrey;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+#new_post_header {
+    font-size: 30px;
+}
+
+#new_post_text {
+    height: 50vh;
+    width: 75vw;
     display: block;
 }
 
-#unfollow_button {
+#create_post_button {
+    margin-top: 10px;
+}
+
+
+
+/* profiles */
+#following {
+    display: inline-block;
+}
+
+#follow_button, #unfollow_button {
     display: block;
+    border: 2px solid grey;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#follow_button:hover, #unfollow_button:hover {
+    cursor: pointer;
 }
 
 #profile-header {
@@ -111,7 +165,7 @@ html {
     margin-left: 40px;
 }
 
-#posts-content {
+#posts-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -127,6 +181,19 @@ html {
 
 .post-info {
     margin: 5px 0 5px 0;
+}
+
+.post-content {
+    font-size: 20px;
+}
+
+.post-likes {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.post-date {
+    font-size: 13px;
 }
 
 .no-posts {

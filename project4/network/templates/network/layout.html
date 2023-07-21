@@ -46,6 +46,9 @@
                     </li>
                 {% endif %}
               </ul>
+            {% if user.is_authenticated %}
+                <a href="{% url 'settings' %}"><img id="settings-icon" src="https://cdn-icons-png.flaticon.com/512/126/126472.png"></a>
+            {% endif %}
             </div>
           </nav>
         

@@ -69,6 +69,17 @@ def register(request):
         return render(request, "network/register.html")
     
 
+def settings(request):
+    user = request.user
+    return render(request, 'network/settings.html', {
+        'user':user
+    })
+
+def change_password(request):
+    user = request.user
+    return render(request, 'network/change_password.html')
+    
+
 def all_posts_api(request):
     current = request.GET.get('current', 0)
     step = request.GET.get('step', 10)

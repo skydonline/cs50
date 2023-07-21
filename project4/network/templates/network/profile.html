@@ -22,6 +22,11 @@
             // create constants for follow buttons
             const followButton = document.querySelector('#follow_button');
 
+            if (profileUsername == currentUsername) {
+                followButton.style.display = 'none';
+                return
+            }
+
             // prevents changing following status on first visit
             if (firstVisit == true) {
                     firstVisit = false;
@@ -99,12 +104,12 @@
 
     
         {% if posts %}  
-        <div id="posts-content">
+        <div id="posts-container">
             {% for post in posts %}
                 <div class="ind-post">
-                    <p class="post-info">{{ post.content }}</p>
-                    <p class="post-info">❤️ {{ post.likes }}</p>
-                    <p class="post-info">{{ post.date }}</p>
+                    <p class="post-info post-content">{{ post.content }}</p>
+                    <p class="post-info post-likes">❤️ {{ post.likes }}</p>
+                    <p class="post-info post-date">{{ post.date }}</p>
                 </div>
             {% endfor %}
         </div>

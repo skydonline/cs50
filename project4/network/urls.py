@@ -11,6 +11,8 @@ urlpatterns = [
     path("newpost", views.new_post, name='new_post'),
     path("profile/<int:user_profile>", views.profile, name='profile'),
     path("following_posts", views.following_posts, name='following_posts'),
+    path("settings", views.settings, name='settings'),
+    path("change_password", views.change_password, name="change_password"),
 
     #APIs
     path('api/all_posts/', views.all_posts_api, name='all_posts_api'),
