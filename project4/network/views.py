@@ -89,6 +89,9 @@ def password(request, userID):
         user.save()
         message = "Password successfully updated."
         return JsonResponse({"message": message})
+    else:
+        message = "Unauthorized."
+        return JsonResponse({"message": message})
 
 
     
