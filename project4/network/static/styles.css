@@ -24,7 +24,7 @@ input {
 }
 
 .blue-button {
-    background-color: var(--blue);
+    background-color: var(--light-blue);
     color: var(--white);
 }
 
@@ -137,6 +137,15 @@ input {
     border-radius: 5px;
     padding: 5px;
     background-color: var(--input-bg);
+}
+
+#save-settings-button:hover {
+    color: var(--hover);
+    background-color: var(--blue);
+}
+
+#save-settings-button.disabled:hover {
+    pointer-events: none;
 }
 
 #new_password, #confirm_password {
