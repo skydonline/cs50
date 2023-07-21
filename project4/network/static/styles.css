@@ -1,5 +1,23 @@
+:root {
+    --border: 1.5px solid #CED0D4;
+    --input-bg: black;
+    --hover: rgba(68, 73, 80, 0.15);
+    --error-border: 2px solid red;
+}
+
 html {
     font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: #121212;
+}
+
+body {
+    background-color: #121212;
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    color: white;
+}
+
+input {
+    color: white;
 }
 
 
@@ -12,9 +30,23 @@ html {
 .post_container {
     min-height: 60px;
     margin: 10px 20px 10px 20px;
-    border: 2px solid lightgrey;
+    border: var(--border);
     border-radius: 10px;
     display: block;
+}
+
+.navbar {
+    background-color: black;
+}
+
+.nav-link, .navbar-brand {
+    color: white;
+    border-radius: 10px;
+    margin: 0 5px 0 5px;
+}
+.nav-link:hover, .navbar-brand:hover {
+    color: white;
+    background-color: var(--hover);
 }
 
 .post_element {
@@ -74,6 +106,7 @@ html {
     position: absolute;
     top: 6px;
     height: 40px;
+    filter: invert(1);
 }
 
 #settings-title {
@@ -87,9 +120,17 @@ html {
 }
 
 .settings-input {
-    border: 2px solid grey;
+    border: var(--border);
     border-radius: 5px;
     padding: 5px;
+    background-color: var(--input-bg);
+}
+
+#new_password, #confirm_password {
+    border: var(--border);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: var(--input-bg);
 }
 
 #change-password-title {
@@ -124,7 +165,7 @@ html {
 
 #new_post_box {
     padding: 20px 0px 20px 20px;
-    border: 2px solid lightgrey;
+    border: var(--border);
     margin-right: 20px;
     border-radius: 10px;
 }
@@ -193,7 +234,7 @@ html {
 .ind-post {
     width: calc(33.33% - 20px);
     margin-bottom: 20px;
-    background-color: lightgray;
+    background-color: white;
     padding: 15px;
 }
 

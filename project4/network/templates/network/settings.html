@@ -17,16 +17,16 @@
             message.style.display = 'block';
             message.innerHTML = 'Please fill out all the required fields.';
             if (newUsername.value == '') {
-                newUsername.style.border = '2px solid red';
+                newUsername.style.border = 'var(--error-border)';
             }
             if (newFirstName.value == '') {
-                newFirstName.style.border = '2px solid red';
+                newFirstName.style.border = 'var(--error-border)';
             }
             if (newLastName.value == '') {
-                newLastName.style.border = '2px solid red';
+                newLastName.style.border = 'var(--error-border)';
             }
             if (newEmail.value == '') {
-                newEmail.style.border = '2px solid red';
+                newEmail.style.border = 'var(--error-border)';
             }
             return
         }
@@ -34,6 +34,7 @@
         if (!validateEmail(newEmail.value)) {
             message.style.display = 'block';
             message.innerHTML = 'Please enter a valid email address.';
+            newEmail.style.border = 'var(--error-border)';
             return
         }
     
@@ -86,7 +87,7 @@
             message.style.display = 'none';     // remove fill out fields message
             const settingsInputs = document.querySelectorAll(".settings-input");
             settingsInputs.forEach((element) => {
-                element.style.border = '2px solid grey'; // change border back to grey
+                element.style.border = 'var(--border)'; // change border back to grey
             });
         }
     });
