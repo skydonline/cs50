@@ -1,8 +1,11 @@
 :root {
     --border: 1.5px solid #CED0D4;
     --input-bg: black;
-    --hover: rgba(68, 73, 80, 0.15);
+    --hover: rgb(85, 85, 85);
     --error-border: 2px solid red;
+    --blue: rgb(53, 121, 234);
+    --light-blue: rgb(71, 175, 255);
+    --white: white;
 }
 
 html {
@@ -13,11 +16,16 @@ html {
 body {
     background-color: #121212;
     font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    color: white;
+    color: var(--white);
 }
 
 input {
-    color: white;
+    color: var(--white);
+}
+
+.blue-button {
+    background-color: var(--blue);
+    color: var(--white);
 }
 
 
@@ -40,13 +48,18 @@ input {
 }
 
 .nav-link, .navbar-brand {
-    color: white;
-    border-radius: 10px;
-    margin: 0 5px 0 5px;
+    color: var(--white);
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
 }
-.nav-link:hover, .navbar-brand:hover {
-    color: white;
+.nav-link:hover {
+    color: var(--white);
     background-color: var(--hover);
+}
+
+.navbar-brand:hover {
+    color: var(--blue);
 }
 
 .post_element {
@@ -234,8 +247,9 @@ input {
 .ind-post {
     width: calc(33.33% - 20px);
     margin-bottom: 20px;
-    background-color: white;
+    background-color: var(--hover);
     padding: 15px;
+    border-radius: 5px;
 }
 
 .post-info {

@@ -3,15 +3,13 @@
 
 {% block body %}
 <script>
-    let message;
+    let message = document.querySelector('.error-message');
     function newSettings(container) {
         // get all input fields
         const newUsername = document.querySelector('#settings-username');
         const newFirstName = document.querySelector('#settings-first_name');
         const newLastName = document.querySelector('#settings-last_name');
         const newEmail = document.querySelector('#settings-email');
-    
-        message = document.querySelector('.error-message');
 
         if (newUsername.value == '' || newFirstName.value == '' || newLastName.value == '' || newEmail.value == '') {
             message.style.display = 'block';
@@ -68,15 +66,14 @@
         window.location.replace('http://127.0.0.1:8000/');
     }
 
+
     // validate email
     function validateEmail(email) {
         var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
         return regex.test(email);
     }
+    
 
-    
-    
-    
     // if user presses enter key, run checkPassword
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
@@ -91,6 +88,50 @@
             });
         }
     });
+
+
+    // if settings are the same, disable save settings button
+    // get inital settings
+    let currentSettingUser;
+    let currentSettingFirstName;
+    let currentSettingLastName;
+    let currentSettingEmail;
+    document.addEventListener("DOMContentLoaded", function() {
+        currentSettingUser = document.querySelector('#settings-username').value;
+        currentSettingFirstName = document.querySelector('#settings-first_name').value;
+        currentSettingLastName = document.querySelector('#settings-last_name').value;
+        currentSettingEmail = document.querySelector('#settings-email').value;
+
+        disableButton();
+        // iterate through function every second
+        setInterval(disableButton, 1000);
+    });
+    function disableButton() {
+        // get new inputs
+        const newSettingUsername = document.querySelector('#settings-username').value;
+        const newSettingFirst = document.querySelector('#settings-first_name').value;
+        const newSettingLast = document.querySelector('#settings-last_name').value;
+        const newSettingEmail = document.querySelector('#settings-email').value;
+
+        const settingsButton = document.querySelector('#save-settings-button');
+
+        if (currentSettingUser == newSettingUsername && 
+        currentSettingFirstName == newSettingFirst && 
+        currentSettingLastName == newSettingLast && 
+        currentSettingEmail == newSettingEmail) {
+            // remove onclick attribute, change colors
+            settingsButton.removeAttribute('onclick');
+            settingsButton.style.filter = 'grayscale(100%)';
+            settingsButton.style.cursor = 'default';
+            
+        } else {
+            // add onclick attribute, change colors
+            settingsButton.setAttribute('onclick','newSettings()');
+            settingsButton.style.filter = 'grayscale(0%)';
+            settingsButton.style.cursor = 'pointer';
+        }
+
+    };
 </script>
 <h1 id="settings-title">Settings</h1>
 
@@ -112,7 +153,7 @@
             <label for="email">Email: </label>
             <input class="settings-input" id="settings-email" value="{{ user.email }}" placeholder="Email Address" type="email">
         </div>
-    <p onclick=newSettings() class="btn btn-primary">Change Settings</p>
+    <p onclick=newSettings() id="save-settings-button" class="btn blue-button">Save Settings</p>
 </form>
 <div id="settings-change-success">
     <h1>Successfully changed settings!</h1>
