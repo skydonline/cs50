@@ -18,5 +18,6 @@ urlpatterns = [
     path('api/all_posts/', views.all_posts_api, name='all_posts_api'),
     path('api/post/<int:postID>', views.post_api, name="post_update"),
     path('api/followers/<int:profile>', views.followers, name='followers'),
-    path('api/following/<int:profile>', views.following, name='following')
+    path('api/following/<int:profile>', views.following, name='following'),
+    path('api/password/<int:userID>', views.password, name="password")
 ]

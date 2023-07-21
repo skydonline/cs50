@@ -78,6 +78,19 @@ def settings(request):
 def change_password(request):
     user = request.user
     return render(request, 'network/change_password.html')
+
+@csrf_exempt
+def password(request, userID):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        new_password = data.get('new_password')
+        user = User.objects.get(pk=userID)
+        user.set_password(new_password)
+        user.save()
+        message = "Password successfully updated."
+        return JsonResponse({"message": message})
+
+
     
 
 def all_posts_api(request):
