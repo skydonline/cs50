@@ -2,28 +2,123 @@
 {% block title %}Settings{% endblock %}
 
 {% block body %}
+<script>
+    let message;
+    function newSettings(container) {
+        // get all input fields
+        const newUsername = document.querySelector('#settings-username');
+        const newFirstName = document.querySelector('#settings-first_name');
+        const newLastName = document.querySelector('#settings-last_name');
+        const newEmail = document.querySelector('#settings-email');
+    
+        message = document.querySelector('.error-message');
+
+        if (newUsername.value == '' || newFirstName.value == '' || newLastName.value == '' || newEmail.value == '') {
+            message.style.display = 'block';
+            message.innerHTML = 'Please fill out all the required fields.';
+            if (newUsername.value == '') {
+                newUsername.style.border = '2px solid red';
+            }
+            if (newFirstName.value == '') {
+                newFirstName.style.border = '2px solid red';
+            }
+            if (newLastName.value == '') {
+                newLastName.style.border = '2px solid red';
+            }
+            if (newEmail.value == '') {
+                newEmail.style.border = '2px solid red';
+            }
+            return
+        }
+
+        if (!validateEmail(newEmail.value)) {
+            message.style.display = 'block';
+            message.innerHTML = 'Please enter a valid email address.';
+            return
+        }
+    
+        // updates user settings
+        fetch(`/api/settings/${currentUserID}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                username: newUsername.value,
+                first_name: newFirstName.value,
+                last_name: newLastName.value,
+                email: newEmail.value
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+        });
+
+        document.querySelector('#settings-form').style.display = 'none';
+        document.querySelector('#change-password-button').style.display = 'none';
+        document.querySelector('#settings-change-success').style.display = 'block';
+
+    
+        // after 3 seconds, redirects to homepage
+        setTimeout(redirect, 3000);
+    };
+
+
+    // redirect to homepage
+    function redirect() {
+        window.location.replace('http://127.0.0.1:8000/');
+    }
+
+    // validate email
+    function validateEmail(email) {
+        var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        return regex.test(email);
+    }
+
+    
+    
+    
+    // if user presses enter key, run checkPassword
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            const container = document.querySelector('#settings-form');
+            newSettings(container);
+        }
+        else {
+            message.style.display = 'none';     // remove fill out fields message
+            const settingsInputs = document.querySelectorAll(".settings-input");
+            settingsInputs.forEach((element) => {
+                element.style.border = '2px solid grey'; // change border back to grey
+            });
+        }
+    });
+</script>
 <h1 id="settings-title">Settings</h1>
 
 <form id="settings-form" action="{% url 'settings' %}" method="post">
     {% csrf_token %}
         <div class="form-group">
             <label for="username">Username: </label>
-            <input value="{{ user.username }}" name="username" placeholder="Username" type="text">
+            <input class="settings-input" id="settings-username" value="{{ user.username }}" placeholder="Username" type="text">
         </div>
         <div class="form-group">
             <label for="first_name">First Name: </label>
-            <input value="{{ user.first_name }}" name="first_name" placeholder="First Name" type="text">
+            <input class="settings-input" id="settings-first_name" value="{{ user.first_name }}" placeholder="First Name" type="text">
         </div>
         <div class="form-group">
             <label for="last_name">Last Name: </label>
-            <input value="{{ user.last_name }}" name="last_name" placeholder="Last Name" type="text">
+            <input class="settings-input" id="settings-last_name" value="{{ user.last_name }}" placeholder="Last Name" type="text">
         </div>
         <div class="form-group">
             <label for="email">Email: </label>
-            <input value="{{ user.email }}" name="email" placeholder="Email Address" type="email">
+            <input class="settings-input" id="settings-email" value="{{ user.email }}" placeholder="Email Address" type="email">
         </div>
-    <button type="submit" class="btn btn-primary">Change Settings</button>
+    <p onclick=newSettings() class="btn btn-primary">Change Settings</p>
 </form>
+<div id="settings-change-success">
+    <h1>Successfully changed settings!</h1>
+    <h1>Redirecting to homepage...</h1>
+</div>
+
+<div class="error-message"></div>
 
 <a href="{% url 'change_password' %}"><button id="change-password-button" class="btn btn-secondary">Change Password</button></a>
 {% endblock %}

@@ -19,5 +19,6 @@ urlpatterns = [
     path('api/post/<int:postID>', views.post_api, name="post_update"),
     path('api/followers/<int:profile>', views.followers, name='followers'),
     path('api/following/<int:profile>', views.following, name='following'),
-    path('api/password/<int:userID>', views.password, name="password")
+    path('api/password/<int:userID>', views.password, name="password"),
+    path('api/settings/<int:userID>', views.settings_api, name="settings")
 ]

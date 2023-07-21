@@ -93,7 +93,26 @@ def password(request, userID):
         message = "Unauthorized."
         return JsonResponse({"message": message})
 
+@csrf_exempt
+def settings_api(request, userID):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        username = data.get('username')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
+        email = data.get('email')
+        user = User.objects.get(pk=userID)
 
+        user.username = username
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.save()
+        message = "User settings successfully updated."
+        return JsonResponse({"message": message})
+    else:
+        message = "Unauthorized."
+        return JsonResponse({"message": message})
     
 
 def all_posts_api(request):
