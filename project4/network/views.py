@@ -239,5 +239,8 @@ def following(request, profile):
 
 def following_posts(request):
     user = request.user
-    following = User.objects.filter()
-    posts = Post.objects.filter
+    user_following = user.following.all()
+    posts = Post.objects.filter(user__in=user_following)
+    return render(request, 'network/following.html', {
+        'posts':posts
+    })
