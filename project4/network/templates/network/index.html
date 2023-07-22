@@ -38,7 +38,7 @@ function fetchPosts() {
                 <div class="edit_container">
                 <p class="post_element post_content">${post.content}</p>
                 <p class="post_element post_date">${post.date}</p>
-                <p onclick="likes(this.parentNode)" class="post_element post_likes">❤️ ${post.likes}</p>
+                <p onclick="changeLikes(this.parentNode.parentNode)" class="post_element post_likes"><span class="like-icon">🤍</span> <span class="amount-of-likes">${post.likes}</span></p>
                 <p class="post_element post_comment">Comment</p>
                 <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary">Edit</button>
                 </div>
@@ -48,6 +48,21 @@ function fetchPosts() {
                 <button onclick="save(this.parentNode.parentNode)" class="post_element post_save btn btn-primary">Save</button>
                 </div>
             `;
+
+            const likeIcon = postContainer.querySelector('.like-icon');
+            const postID = postContainer.dataset.postid;
+
+            fetch(`/api/likes/${postID}`)
+            .then(response => response.json())
+            .then(data => {
+                const users = data.usersid;
+                if (users.includes(currentUserID)) {
+                    likeIcon.innerHTML = '❤️';
+
+                } else if (!users.includes(currentUserID)) {
+                    likeIcon.innerHTML = '🤍';
+                }
+            })
 
 
             // if logged in user is current user, add edit button

@@ -287,6 +287,14 @@ input {
     margin-top: 15px;
 }
 
+.post_likes:hover {
+    cursor: pointer;
+}
+
+.like-icon {
+    display: inline-block;
+}
+
 .post-date {
     font-size: 13px;
 }

@@ -244,3 +244,28 @@ def following_posts(request):
     return render(request, 'network/following.html', {
         'posts':posts
     })
+
+@csrf_exempt
+def post_likes(request, postID):
+    post = Post.objects.get(id=postID)
+
+    if request.method == 'GET':
+        likes_users = post.likes.all()
+        data = {
+            'usersid': [user.id for user in likes_users]
+        }
+        return JsonResponse(data)
+    
+    elif request.method == 'PUT':
+        data = json.loads(request.body)
+        user = data.get('user')
+        action = data.get('action')
+
+        if action == 'add':
+            post.likes.add(user)
+
+        elif action == 'remove':
+            post.likes.remove(user)
+
+        post.save()
+        return JsonResponse('Successfully updated likes.', safe=False)
