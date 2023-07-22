@@ -9,7 +9,7 @@
         <h2 id="new_post_header">New Post</h2>
         <form method="post" action="{% url 'new_post' %}">
             {% csrf_token %}
-            <textarea name="new_post_text" id="new_post_text" placeholder="Start typing here..."></textarea>
+            <textarea name="new_post_text" id="new_post_text" placeholder="What's on your mind?"></textarea>
             <button id="create_post_button" type="submit" class="btn btn-primary">Create Post</button>
         </form>
     </div>

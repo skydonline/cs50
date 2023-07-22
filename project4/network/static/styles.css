@@ -39,7 +39,7 @@ input {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin: 20px;
+    margin: 30px 50px 30px 50px;
 }
 
 .post_container {
@@ -78,10 +78,13 @@ input {
 .post_user {
     font-size: 30px;
     padding-top: 10px;
+    display: inline;
 }
 
 .post_user:hover {
     cursor: pointer;
+    color: var(--blue);
+    font-weight: bold;
 }
 
 .post_content {
@@ -113,7 +116,10 @@ input {
 
 .post_textarea {
     margin-bottom: 10px;
-    font-size: 12px;
+    height: 100px;
+    width: 300px;
+    padding: 10px;
+    border-radius: 1px;
 }
 
 .save_container {
@@ -123,9 +129,9 @@ input {
 
 /* settings */
 #settings-icon {
-    right: 15px;
+    right: 23px;
     position: absolute;
-    top: 10px;
+    top: 23px;
     height: 40px;
     filter: invert(1);
 }
@@ -279,7 +285,6 @@ input {
 
 .post-likes {
     margin-top: 15px;
-    font-weight: bold;
 }
 
 .post-date {
@@ -292,4 +297,8 @@ input {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+#no-posts-image {
+    width: 300px;
 }

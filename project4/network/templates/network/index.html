@@ -11,7 +11,7 @@ function fetchPosts() {
     if (!hasMorePosts) {
         return console.log("Error: There are no more posts.");
     };
-    console.log(`fetching posts from ${current}`);
+    console.log(`Fetching posts starting from post ${current}`);
 
     fetch(`/api/all_posts/?current=${current}&step=${step}`)
     .then(response => response.json())
@@ -38,7 +38,7 @@ function fetchPosts() {
                 <div class="edit_container">
                 <p class="post_element post_content">${post.content}</p>
                 <p class="post_element post_date">${post.date}</p>
-                <p class="post_element post_likes">❤️ ${post.likes}</p>
+                <p onclick="likes(this.parentNode)" class="post_element post_likes">❤️ ${post.likes}</p>
                 <p class="post_element post_comment">Comment</p>
                 <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary">Edit</button>
                 </div>

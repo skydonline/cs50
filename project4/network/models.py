@@ -12,7 +12,7 @@ class User(AbstractUser):
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post_user_id")
     content = models.CharField(max_length=200)
-    likes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(User, blank=True)
     comments = models.ManyToManyField("Comment", related_name="post_comment", blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
@@ -26,5 +26,4 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment_user_id")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment_post_id")
     content = models.CharField(max_length=100)
-    likes = models.IntegerField()
     date = models.DateField(auto_now_add=True)

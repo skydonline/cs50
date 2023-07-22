@@ -128,7 +128,7 @@ def all_posts_api(request):
                 'user': post.user.username,
                 'userID': post.user.id,
                 'content': post.content,
-                'likes': post.likes,
+                'likes': post.likes.count(),
                 'date': post.get_formatted_date(),
             }
             for post in posts

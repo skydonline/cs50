@@ -32,8 +32,10 @@
                     firstVisit = false;
                     if (is_following.includes(profileUsername)) {
                         followButton.innerHTML = 'Unfollow';
+                        followButton.style.backgroundColor = 'var(--hover)';
                     } else {
                         followButton.innerHTML = 'Follow';
+                        followButton.style.backgroundColor = 'var(--blue)';
                     }
                     return  // breaks out of function
             }
@@ -41,7 +43,9 @@
 
             // checks if logged in user is following viewed profile
             if (is_following.includes(profileUsername)) {
+                // change button to follow
                 followButton.innerHTML = 'Follow';
+                followButton.style.backgroundColor = 'var(--blue)';
 
                 // removes follower
                 fetch(`/api/following/${currentUserID}`, {
@@ -57,8 +61,9 @@
                 })
 
             } else {
-                // hide follow button, show unfollow button
+                // change button to unfollow
                 followButton.innerHTML = 'Unfollow';
+                followButton.style.backgroundColor = 'var(--hover)';
 
                 // adds follower
                 fetch(`/api/following/${currentUserID}`, {
@@ -74,6 +79,10 @@
                 })
             };
         });
+
+        let followCount = document.querySelector('#followers-total').value;
+        console.log(followCount);
+
     };
 
     document.addEventListener('DOMContentLoaded', follow);
@@ -86,8 +95,8 @@
                 <tbody>
                     <tr>
                         <td class="profile-stats">{{ posts_count }}</td>
-                        <td class="profile-stats">{{ following_count }}</td>
                         <td class="profile-stats">{{ followers_count }}</td>
+                        <td id="followers-total" class="profile-stats">{{ following_count }}</td>
                     </tr>
                     <tr>
                         <td class="profile-stats">Posts</td>
@@ -108,7 +117,7 @@
             {% for post in posts %}
                 <div class="ind-post">
                     <p class="post-info post-content">{{ post.content }}</p>
-                    <p class="post-info post-likes">❤️ {{ post.likes }}</p>
+                    <p class="post-info post-likes">❤️ {{ post.likes.count }}</p>
                     <p class="post-info post-date">{{ post.date }}</p>
                 </div>
             {% endfor %}
@@ -118,7 +127,7 @@
             <h1>No Posts Yet</h1>
         </div>
         <div class="no-posts">
-            <img id="no-posts-image" src="https://pbs.twimg.com/media/CidJXBuUUAEgAYu.jpg">
+            <img id="no-posts-image" src="https://community.jobaajlearnings.com/assets/nopost.png">
         </div>
         {% endif %}
 {% endblock %}
