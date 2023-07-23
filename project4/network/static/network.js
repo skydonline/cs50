@@ -119,3 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(darkMode,20);
 });
 
+
+function delay() {
+    console.log("Delay.");
+}

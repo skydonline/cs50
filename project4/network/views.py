@@ -162,6 +162,14 @@ def post_api(request, postID):
             }
 
             return JsonResponse(response_data)
+    
+    elif request.method == 'DELETE':
+        data = json.loads(request.body)
+        postID = data.get('postid')
+        post = Post.objects.get(pk=postID)
+        post.delete()
+
+        return JsonResponse('Deleted post.', safe=False)
 
     return JsonResponse({"Error: Invalid request"}, status=400)
 
