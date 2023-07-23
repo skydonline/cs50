@@ -277,6 +277,7 @@ input {
     height: 50vh;
     width: 75vw;
     display: block;
+    padding: 5px;
 }
 
 #create_post_button {
@@ -373,4 +374,11 @@ input {
 
 #no-posts-image {
     width: 300px;
+}
+
+#following_no_posts {
+    font-size: 30px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 20px;
 }
