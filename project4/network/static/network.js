@@ -25,6 +25,7 @@ function changeLikes(container) {
         // If they have already liked it, unlike it
         if (users.includes(currentUserID)) {
             likeIcon.innerHTML = '🤍';
+            likeIcon.style.animation = 'growAndShrink 1s';
             likeCount.innerHTML = `${likeAmount - 1}`;
 
             fetch(`/api/likes/${postID}`, {
@@ -42,6 +43,7 @@ function changeLikes(container) {
         // If they haven't liked it, like it
         } else if (!users.includes(currentUserID)) {
             likeIcon.innerHTML = '❤️';
+            likeIcon.style.animation = 'growAndShrink 1s';
             likeCount.innerHTML = `${likeAmount + 1}`;
             fetch(`/api/likes/${postID}`, {
                 method: 'PUT',

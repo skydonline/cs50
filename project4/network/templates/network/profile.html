@@ -20,16 +20,16 @@
     </div>
 
     <div id="following">
-        <p id="follow_button" onclick=follow()>Follow</p>
+        <p id="follow_button" class="no-color-change"onclick=follow()>Follow</p>
     </div>
 
     
         {% if posts %}  
         <div id="posts-container">
             {% for post in posts %}
-                <div class="ind-post">
+                <div data-postid="{{post.id}}" class="ind-post">
                     <p class="post-info post-content">{{ post.content }}</p>
-                    <p class="post-info post-likes"><span class="no-color-change like-icon">❤️</span> {{ post.likes.count }}</p>
+                    <p onclick="changeLikes(this.parentNode)" class="post-info post-likes"><span class="no-color-change like-icon">❤️</span> <span class="amount-of-likes">{{ post.likes.count }}</span></p>
                     <p class="post-info post-date">{{ post.date }}</p>
                 </div>
             {% endfor %}

@@ -22,14 +22,14 @@
             <label for="email">Email: </label>
             <input class="settings-input" id="settings-email" value="{{ user.email }}" placeholder="Email Address" type="email">
         </div>
-    <button onclick=newSettings() id="save-settings-button" class="btn blue-button">Save Settings</button>
+    <button onclick=newSettings() id="save-settings-button" class="btn blue-button no-color-change">Save Settings</button>
 </form>
 <div id="settings-change-success">
     <h1>Successfully changed settings!</h1>
     <h1>Redirecting to homepage...</h1>
 </div>
 
-<div class="error-message"></div>
+<div class="error-message no-color-change"></div>
 
 <a href="{% url 'change_password' %}"><button id="change-password-button" class="btn btn-secondary">Change Password</button></a>
 
