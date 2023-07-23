@@ -8,7 +8,7 @@
         <p class="post_element post_user">{{post.user}}</p>
         <p class="post_element post_content">{{post.content}}</p>
         <p class="post_element post_date">{{post.date}}</p>
-        <p class="post_element post_likes">❤️ {{post.likes}}</p>
+        <p class="post_element post_likes"><span class="no-color-change like-icon">❤️</span> {{post.likes.count}}</p>
         <p class="post_element post_comment">Comment</p>
     </div>
     {% endfor %}

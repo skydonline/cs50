@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,8 +8,8 @@
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
         <link href="{% static 'styles.css' %}" rel="stylesheet">
-        <script src="{% static 'network.js' %}"></script>
         <div id="current-user" data-user="{{ request.user }}" data-id="{{ user.id }}"></div>
+        <script src="{% static 'network.js' %}"></script>
     </head>
     <body>
         <div id="navbar">
@@ -47,6 +46,7 @@
                 {% endif %}
               </ul>
             {% if user.is_authenticated %}
+                <img onclick=darkMode() data-darkmode="{{user.dark_mode}}" id="dark-mode-toggle">
                 <a href="{% url 'settings' %}"><img id="settings-icon" src="https://cdn-icons-png.flaticon.com/512/126/126472.png"></a>
             {% endif %}
             </div>

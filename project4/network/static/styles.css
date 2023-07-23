@@ -19,6 +19,14 @@ body {
     color: var(--white);
 }
 
+body.light-mode {
+    filter: invert(1);
+}
+
+.no-color-change {
+    filter: invert(0);
+}
+
 input {
     color: var(--white);
 }
@@ -71,6 +79,14 @@ input {
     color: var(--blue);
 }
 
+#dark-mode-toggle {
+    width: 50px;
+    position: absolute;
+    top: 18px;
+    right: 80px;
+    filter: invert(1);
+}
+
 .post_element {
     margin: 0px 10px 0px 20px;
 }
@@ -117,7 +133,7 @@ input {
 .post_textarea {
     margin-bottom: 10px;
     height: 100px;
-    width: 300px;
+    width: 250px;
     padding: 10px;
     border-radius: 1px;
 }

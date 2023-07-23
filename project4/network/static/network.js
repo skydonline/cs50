@@ -59,8 +59,61 @@ function changeLikes(container) {
     })
 };
 
+let layoutFirstVisit = true;
+// Changes dark mode preference
+function darkMode() {
+    const darkModeToggle = document.querySelector('#dark-mode-toggle');
+    const darkModePref = darkModeToggle.dataset.darkmode;
+    const noColorChange = document.querySelectorAll('.no-color-change');
+
+    // Don't change dark mode preference on first visit
+    if (layoutFirstVisit) {
+        layoutFirstVisit = false;
+
+        if (darkModePref == 'True') {
+            darkModeToggle.src = 'https://cdn3.iconfinder.com/data/icons/meteocons/512/moon-symbol-512.png';
+        } else if (darkModePref == 'False') {
+            noColorChange.forEach(element => {
+                element.style.filter = 'invert(1)';
+            })
+            document.body.classList.toggle('light-mode');
+            darkModeToggle.src = 'https://cdn4.iconfinder.com/data/icons/biticon-weather-line/24/weather_sun_sunny_day-512.png';
+        }
+        return
+    }
+
+    const body = document.body;
+    body.classList.toggle('light-mode');
+
+    if (darkModePref == 'True') {
+        // Turn from true to false
+        darkModeToggle.setAttribute('data-darkmode', 'False');
+        darkModeToggle.src = 'https://cdn4.iconfinder.com/data/icons/biticon-weather-line/24/weather_sun_sunny_day-512.png';
+
+        noColorChange.forEach(element => {
+            element.style.filter = 'invert(1)';
+        })
+    } else {
+        // Turn from false to true
+        darkModeToggle.setAttribute('data-darkmode', 'True');
+        darkModeToggle.src = 'https://cdn3.iconfinder.com/data/icons/meteocons/512/moon-symbol-512.png';
+
+        noColorChange.forEach(element => {
+            element.style.filter = 'invert(0)';
+        })
+    }
+
+    fetch(`/api/darkmode/${currentUserID}`, {
+        method: 'PUT',
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+    });
+};
 
 document.addEventListener('DOMContentLoaded', function() { 
     getUserInfo();
+    setTimeout(darkMode,20);
 });
 

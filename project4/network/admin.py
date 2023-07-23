@@ -3,7 +3,7 @@ from .models import User,Post,Comment
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ("username", "first_name", "last_name", "email")
+    list_display = ("username", "first_name", "last_name", "email", "dark_mode")
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ("user",)

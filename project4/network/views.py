@@ -269,3 +269,11 @@ def post_likes(request, postID):
 
         post.save()
         return JsonResponse('Successfully updated likes.', safe=False)
+    
+@csrf_exempt
+def darkmode(request, userID):
+    if request.method == 'PUT':
+        user = User.objects.get(pk=userID)
+        user.dark_mode = not user.dark_mode
+        user.save()
+        return JsonResponse('Changed user darkmode preferences.', safe=False)

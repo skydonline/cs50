@@ -21,5 +21,6 @@ urlpatterns = [
     path('api/following/<int:profile>', views.following, name='following'),
     path('api/password/<int:userID>', views.password, name="password"),
     path('api/settings/<int:userID>', views.settings_api, name="settings"),
-    path('api/likes/<int:postID>', views.post_likes, name='post_likes')
+    path('api/likes/<int:postID>', views.post_likes, name='post_likes'),
+    path('api/darkmode/<int:userID>', views.darkmode, name='darkmode')
 ]

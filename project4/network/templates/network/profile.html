@@ -1,94 +1,6 @@
 {% extends 'network/layout.html' %}
-
 {% block title %}Profile{% endblock %}
-
 {% block body %}
-<script>
-    let is_following;
-    let profile;
-    let profileUsername;    // logged in user username
-    let firstVisit = true;
-
-    // see if user is following or not
-    function follow() {
-
-        fetch(`/api/following/${currentUserID}`)
-        .then(response => response.json())
-        .then(following => {
-            is_following = following.following;     // people that logged in user is following
-            profile = document.querySelector('#username');
-            profileUsername = profile.textContent;  // profile view username
-            const followers = document.querySelector('#followers-total');
-            const followerAmount = parseInt(followers.innerHTML,10);
-
-            // create constants for follow buttons
-            const followButton = document.querySelector('#follow_button');
-
-            if (profileUsername == currentUsername) {
-                followButton.style.display = 'none';
-                return
-            }
-
-            // prevents changing following status on first visit
-            if (firstVisit == true) {
-                    firstVisit = false;
-                    if (is_following.includes(profileUsername)) {
-                        followButton.innerHTML = 'Unfollow';
-                        followButton.style.backgroundColor = 'var(--hover)';
-                    } else {
-                        followButton.innerHTML = 'Follow';
-                        followButton.style.backgroundColor = 'var(--blue)';
-                    }
-                    return  // breaks out of function
-            }
-
-
-            // checks if logged in user is following viewed profile
-            if (is_following.includes(profileUsername)) {
-                // change button to follow
-                followButton.innerHTML = 'Follow';
-                followButton.style.backgroundColor = 'var(--blue)';
-                followers.innerHTML = `${followerAmount - 1}`;
-
-                // removes follower
-                fetch(`/api/following/${currentUserID}`, {
-                    method: 'PUT',
-                    body: JSON.stringify({
-                        following: profileUsername,
-                        action: 'remove'
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result);
-                })
-
-            } else {
-                // change button to unfollow
-                followButton.innerHTML = 'Unfollow';
-                followButton.style.backgroundColor = 'var(--hover)';
-                followers.innerHTML = `${followerAmount + 1}`;
-
-                // adds follower
-                fetch(`/api/following/${currentUserID}`, {
-                    method: 'PUT',
-                    body: JSON.stringify({
-                        following: profileUsername,
-                        action: 'add'
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result);
-                })
-            };
-        });
-    };
-
-    document.addEventListener('DOMContentLoaded', follow);
-
-</script>
-
     <div id="profile-header">
         <h1 id="username">{{ user_profile.username }}</h1>
             <table id="profile-table">
@@ -117,7 +29,7 @@
             {% for post in posts %}
                 <div class="ind-post">
                     <p class="post-info post-content">{{ post.content }}</p>
-                    <p class="post-info post-likes">❤️ {{ post.likes.count }}</p>
+                    <p class="post-info post-likes"><span class="no-color-change like-icon">❤️</span> {{ post.likes.count }}</p>
                     <p class="post-info post-date">{{ post.date }}</p>
                 </div>
             {% endfor %}
@@ -130,4 +42,91 @@
             <img id="no-posts-image" src="https://community.jobaajlearnings.com/assets/nopost.png">
         </div>
         {% endif %}
+<script>
+let is_following;
+let profile;
+let profileUsername;    // logged in user username
+let profileFirstVisit = true;
+
+// see if user is following or not
+function follow() {
+
+    fetch(`/api/following/${currentUserID}`)
+    .then(response => response.json())
+    .then(following => {
+        is_following = following.following;     // people that logged in user is following
+        profile = document.querySelector('#username');
+        profileUsername = profile.textContent;  // profile view username
+        const followers = document.querySelector('#followers-total');
+        const followerAmount = parseInt(followers.innerHTML,10);
+
+        // create constants for follow buttons
+        const followButton = document.querySelector('#follow_button');
+
+        if (profileUsername == currentUsername) {
+            followButton.style.display = 'none';
+            return
+        }
+
+        // prevents changing following status on first visit
+        if (profileFirstVisit == true) {
+                profileFirstVisit = false;
+                if (is_following.includes(profileUsername)) {
+                    followButton.innerHTML = 'Unfollow';
+                    followButton.style.backgroundColor = 'var(--hover)';
+                } else {
+                    followButton.innerHTML = 'Follow';
+                    followButton.style.backgroundColor = 'var(--blue)';
+                }
+                return  // breaks out of function
+        }
+
+
+        // checks if logged in user is following viewed profile
+        if (is_following.includes(profileUsername)) {
+            // change button to follow
+            followButton.innerHTML = 'Follow';
+            followButton.style.backgroundColor = 'var(--blue)';
+            followers.innerHTML = `${followerAmount - 1}`;
+
+            // removes follower
+            fetch(`/api/following/${currentUserID}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    following: profileUsername,
+                    action: 'remove'
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+            })
+
+        } else {
+            // change button to unfollow
+            followButton.innerHTML = 'Unfollow';
+            followButton.style.backgroundColor = 'var(--hover)';
+            followers.innerHTML = `${followerAmount + 1}`;
+
+            // adds follower
+            fetch(`/api/following/${currentUserID}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    following: profileUsername,
+                    action: 'add'
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+            })
+        };
+    });
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    follow();
+});
+
+</script>
 {% endblock %}
