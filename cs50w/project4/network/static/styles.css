@@ -50,6 +50,28 @@ input {
 
 
 
+/* register & login */
+#register-login-max-width {
+    width: 20vw;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#register-header {
+    display: block;
+}
+
+#register-login-message {
+    margin: 0;
+    margin-top: 20px;
+}
+
+#register-login-here {
+    margin: 0;
+}
+
+
+
 /* home index */
 #observerElement {
     margin-bottom: 40px;
@@ -200,13 +222,21 @@ input {
 }
 
 #settings-title {
-    margin-left: 20px;
+    margin-left: 50px;
+    margin-top: 30px;
+}
+
+#settings-form, #change-password-button, #change-password-section {
+    margin-left: 50px;
+    margin-top: 40px;
+}
+
+#change-settings-button {
     margin-top: 20px;
 }
 
-#settings-form, #change-password-button {
-    margin-left: 40px;
-    margin-top: 20px;
+.form-group {
+    margin: 25px 0 25px 0;
 }
 
 .settings-input {
@@ -214,6 +244,7 @@ input {
     border-radius: 5px;
     padding: 5px;
     background-color: var(--input-bg);
+    margin-left: 10px;
 }
 
 #save-settings-button:hover {
@@ -230,16 +261,6 @@ input {
     border-radius: 5px;
     padding: 5px;
     background-color: var(--input-bg);
-}
-
-#change-password-title {
-    margin-left: 20px;
-    margin-top: 20px;
-}
-
-#change-password-form {
-    margin-left: 40px;
-    margin-top: 20px;
 }
 
 .error-message {

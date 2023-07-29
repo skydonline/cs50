@@ -1,6 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+<div id="register-login-max-width">
 
     <h2>Login</h2>
 
@@ -19,6 +20,8 @@
         <input class="btn btn-primary" type="submit" value="Login">
     </form>
 
-    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+    <p id="register-login-message">Don't have an account?</p>
+    <a id="register-login-here" href="{% url 'register' %}">Register</a>
+</div>
 
 {% endblock %}
