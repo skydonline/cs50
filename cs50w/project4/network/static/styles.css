@@ -290,13 +290,16 @@ input {
 #new_post_section {
     margin: 0;
     padding-left: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 #new_post_box {
-    padding: 20px 0px 20px 20px;
+    padding: 20px 20px 20px 20px;
     border: var(--border);
     margin-right: 20px;
     border-radius: 10px;
+    width: 45%;
 }
 
 #new_post_header {
@@ -304,9 +307,10 @@ input {
 }
 
 #new_post_text {
-    rows: 4;
-    width: 75vw;
+    height: 64px;
+    width: 100%;
     display: block;
+    margin-right: 20px!important;
     padding: 5px;
 }
 
