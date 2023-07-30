@@ -136,8 +136,18 @@ input {
     font-weight: bold;
 }
 
+.post_image {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
 .post_content {
     display: block;
+    margin-top: 10px;
 }
 
 .post_date {
@@ -294,10 +304,24 @@ input {
 }
 
 #new_post_text {
-    height: 50vh;
+    rows: 4;
     width: 75vw;
     display: block;
     padding: 5px;
+}
+
+#new_post_image {
+    height: 32px;
+    margin-left: 10px;
+}
+
+#new_post_image_area {
+    display: flex;
+    align-items: center;
+}
+
+#new_post_image_label {
+    margin: 0;
 }
 
 #create_post_button {

@@ -16,6 +16,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, blank=True)
     comments = models.ManyToManyField("Comment", related_name="post_comment", blank=True)
     date = models.DateTimeField(auto_now_add=True)
+    image = models.CharField(max_length=200, default="null", blank=True)
 
     def __str__(self):
         return self.get_formatted_date()

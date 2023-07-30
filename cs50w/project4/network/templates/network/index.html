@@ -2,8 +2,7 @@
 {% block body %}
 <div id="all_posts"></div>
 <div id="observerElement"></div>
-<div id="deletePostPrompt">
-</div>
+<div id="deletePostPrompt"></div>
 <script>
 // initalize current post id and step
 let current = 0;
@@ -30,12 +29,33 @@ function fetchPosts() {
 
         // creates a post in HTML for each post
         posts.forEach(post => {
+            console.log(post.image);
 
             const postContainer = document.createElement('div');
             postContainer.className = 'post_container';
             postContainer.dataset.postid = post.id;
             postContainer.dataset.userid = post.userID;
     
+            if (post.image !== 'null') {
+                postContainer.innerHTML = 
+            `
+                <p onclick="userProfile(this.parentNode)" class="post_element post_user no-color-change">${post.user}</p>
+                <div class="edit_container">
+                <img class="post_element post_image no-color-change" src="${post.image}">
+                <p class="post_element post_content">${post.content}</p>
+                <p class="post_element post_date">${post.date}</p>
+                <p onclick="changeLikes(this.parentNode.parentNode)" class="post_element post_likes"><span class="like-icon no-color-change">🤍</span> <span class="amount-of-likes">${post.likes}</span></p>
+                <p class="post_element post_comment">Comment</p>
+                <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary no-color-change">Edit</button>
+                </div>
+                <div class="save_container">
+                <textarea class="post_element post_textarea">${post.content}</textarea>
+                <br>
+                <button onclick="savePost(this.parentNode.parentNode)" class="post_element post_save btn btn-primary no-color-change">Save</button>
+                <button onclick="deletePost(this.parentNode.parentNode)" class="post_element post_delete btn btn-danger no-color-change">Delete</button>
+                </div>
+            `;
+            } else {
             postContainer.innerHTML = 
             `
                 <p onclick="userProfile(this.parentNode)" class="post_element post_user no-color-change">${post.user}</p>
@@ -53,6 +73,7 @@ function fetchPosts() {
                 <button onclick="deletePost(this.parentNode.parentNode)" class="post_element post_delete btn btn-danger no-color-change">Delete</button>
                 </div>
             `;
+            }
 
             const likeIcon = postContainer.querySelector('.like-icon');
             const postID = postContainer.dataset.postid;

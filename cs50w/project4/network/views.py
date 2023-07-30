@@ -130,6 +130,7 @@ def all_posts_api(request):
                 'content': post.content,
                 'likes': post.likes.count(),
                 'date': post.get_formatted_date(),
+                'image':post.image,
             }
             for post in posts
         ]
@@ -178,7 +179,11 @@ def new_post(request):
     if request.method == 'POST':
         user = request.user
         content = request.POST['new_post_text']
-        new_post = Post(user=user, content=content)
+        image = request.POST['new_post_image']
+        if image != '':
+            new_post = Post(user=user, content=content, image=image)
+        else:
+            new_post = Post(user=user, content=content)
         new_post.save()
         return redirect('index')
     return render(request, 'network/newpost.html')
