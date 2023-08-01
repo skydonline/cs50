@@ -17,17 +17,17 @@ body {
     background-color: #121212;
     font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     color: var(--white);
+    min-height: 100vh;
 }
 
-body.light-mode {
-    filter: invert(1);
-}
+/* light mode body */
 .light-mode {
-    
+    background-color: #e9eef3;
+    transition: background-color 0.5s ease;
 }
 
-.no-color-change {
-    filter: invert(0);
+.dark-mode {
+    transition: background-color 0.5s ease;
 }
 
 input {
@@ -96,8 +96,20 @@ input {
     margin-bottom: 40px;
 }
 
+.light-mode .post_container {
+    background-color: var(--white);
+}
+
 .navbar {
     background-color: black;
+}
+
+.light-mode .navbar {
+    background-color: var(--white);
+}
+
+.light-mode .nav-link, .light-mode .navbar-brand {
+    color: black;
 }
 
 .nav-link, .navbar-brand {
@@ -106,6 +118,7 @@ input {
     margin: 10px;
     padding: 10px;
 }
+
 .nav-link:hover {
     color: var(--white);
     background-color: var(--hover);
@@ -123,8 +136,20 @@ input {
     filter: invert(1);
 }
 
+.light-mode #dark-mode-toggle {
+    filter: invert(0);
+}
+
 .post_element {
     margin: 0px 20px 0px 20px;
+}
+
+.light-mode .post_user, .light-mode .post_content, .light-mode .amount_of_likes, .light-mode .post_comment, .light-mode .post_date {
+    color: black;
+}
+
+.light-mode .post_likes {
+    color: var(--white);
 }
 
 .post_user {
@@ -237,18 +262,30 @@ input {
     filter: invert(1);
 }
 
+.light-mode #settings-icon {
+    filter: invert(0);
+}
+
 #settings-title {
     margin-left: 50px;
     margin-top: 30px;
 }
 
-#settings-form, #change-password-button, #change-password-section {
+#settings-form, #change-password-section {
     margin-left: 50px;
     margin-top: 40px;
 }
 
+#change-password-button {
+    margin: 20px 0px 30px 50px;
+}
+
+.light-mode #settings-title, .light-mode #settings-form, .light-mode #password-title, .light-mode #change-password-form {
+    color: black;
+}
+
 #change-settings-button {
-    margin-top: 20px;
+    margin: 10px 0px 30px 0px;
 }
 
 .form-group {
@@ -261,6 +298,11 @@ input {
     padding: 5px;
     background-color: var(--input-bg);
     margin-left: 10px;
+}
+
+.light-mode .settings-input, .light-mode #new_password, .light-mode #confirm_password{
+    background-color: var(--white);
+    color: black;
 }
 
 #save-settings-button:hover {
@@ -281,8 +323,8 @@ input {
 
 .error-message {
     display: none;
-    margin-left: 40px;
     color: red;
+    margin-bottom: 20px;
 }
 
 #password-change-success, #settings-change-success {
@@ -291,6 +333,9 @@ input {
     margin-left: 20px;
 }
 
+.light-mode #password-change-success, .light-mode #settings-change-success {
+    color: black;
+}
 
 
 /* new post */
@@ -305,8 +350,15 @@ input {
     padding: 20px 20px 20px 20px;
     border: var(--border);
     margin-right: 20px;
+    margin-top: 30px;
     border-radius: 10px;
+    height: 325px;
     width: 45%;
+}
+
+.light-mode #new_post_box {
+    background-color: var(--white);
+    color: black;
 }
 
 #new_post_header {
@@ -355,6 +407,10 @@ input {
 
 #follow_button:hover, #unfollow_button:hover {
     cursor: pointer;
+}
+
+.light-mode #profile-username, .light-mode #profile-table {
+    color: black;
 }
 
 #profile-header {
@@ -409,4 +465,8 @@ input {
     text-align: center;
     margin: 0 auto;
     margin-top: 20px;
+}
+
+.light-mode #following_no_posts {
+    color: black;
 }

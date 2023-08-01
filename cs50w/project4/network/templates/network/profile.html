@@ -2,7 +2,7 @@
 {% block title %}Profile{% endblock %}
 {% block body %}
     <div id="profile-header">
-        <h1 id="username">{{ user_profile.username }}</h1>
+        <h1 id="profile-username">{{ user_profile.username }}</h1>
             <table id="profile-table">
                 <tbody>
                     <tr>
@@ -32,7 +32,7 @@
                         <img class="no-color-change post_image" src="{{ post.image }}">
                     {% endif %}
                     <p class="post_element post_content">{{ post.content }}</p>
-                    <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><span class="no-color-change like-icon">❤️</span> <span class="amount-of-likes">{{ post.likes.count }}</span></p>
+                    <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><span class="no-color-change like-icon">❤️</span> <span class="amount_of_likes">{{ post.likes.count }}</span></p>
                     <p class="post_element post_date">{{ post.date }}</p>
                 </div>
             {% endfor %}
@@ -58,7 +58,7 @@ function follow() {
     .then(response => response.json())
     .then(following => {
         is_following = following.following;     // people that logged in user is following
-        profile = document.querySelector('#username');
+        profile = document.querySelector('#profile-username');
         profileUsername = profile.textContent;  // profile view username
         const followers = document.querySelector('#followers-total');
         const followerAmount = parseInt(followers.innerHTML,10);

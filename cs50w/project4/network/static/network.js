@@ -13,7 +13,7 @@ function getUserInfo() {
 function changeLikes(container) {
     const likeIcon = container.querySelector('.like-icon');
     const postID = container.dataset.postid;
-    const likeCount = container.querySelector('.amount-of-likes');
+    const likeCount = container.querySelector('.amount_of_likes');
     const likeAmount = parseInt(likeCount.innerHTML, 10);
 
     // Gets likes on post
@@ -66,7 +66,6 @@ let layoutFirstVisit = true;
 function darkMode() {
     const darkModeToggle = document.querySelector('#dark-mode-toggle');
     const darkModePref = darkModeToggle.dataset.darkmode;
-    const noColorChange = document.querySelectorAll('.no-color-change');
 
     // Don't change dark mode preference on first visit
     if (layoutFirstVisit) {
@@ -74,11 +73,11 @@ function darkMode() {
 
         if (darkModePref == 'True') {
             darkModeToggle.src = 'https://cdn3.iconfinder.com/data/icons/meteocons/512/moon-symbol-512.png';
+            document.body.classList.remove('light-mode');
+            document.body.classList.toggle('dark-mode');
         } else if (darkModePref == 'False') {
-            noColorChange.forEach(element => {
-                element.style.filter = 'invert(1)';
-            })
             document.body.classList.toggle('light-mode');
+            document.body.classList.remove('dark-mode');
             darkModeToggle.src = 'https://cdn4.iconfinder.com/data/icons/biticon-weather-line/24/weather_sun_sunny_day-512.png';
         }
         return
@@ -91,18 +90,10 @@ function darkMode() {
         // Turn from true to false
         darkModeToggle.setAttribute('data-darkmode', 'False');
         darkModeToggle.src = 'https://cdn4.iconfinder.com/data/icons/biticon-weather-line/24/weather_sun_sunny_day-512.png';
-
-        noColorChange.forEach(element => {
-            element.style.filter = 'invert(1)';
-        })
     } else {
         // Turn from false to true
         darkModeToggle.setAttribute('data-darkmode', 'True');
         darkModeToggle.src = 'https://cdn3.iconfinder.com/data/icons/meteocons/512/moon-symbol-512.png';
-
-        noColorChange.forEach(element => {
-            element.style.filter = 'invert(0)';
-        })
     }
 
     fetch(`/api/darkmode/${currentUserID}`, {
