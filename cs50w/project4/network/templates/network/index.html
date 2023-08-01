@@ -43,9 +43,9 @@ function fetchPosts() {
                 <div class="edit_container">
                 <img class="post_element post_image no-color-change" src="${post.image}">
                 <p class="post_element post_content">${post.content}</p>
-                <p class="post_element post_date">${post.date}</p>
                 <p onclick="changeLikes(this.parentNode.parentNode)" class="post_element post_likes"><span class="like-icon no-color-change">🤍</span> <span class="amount-of-likes">${post.likes}</span></p>
                 <p class="post_element post_comment">Comment</p>
+                <p class="post_element post_date">${post.date}</p>
                 <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary no-color-change">Edit</button>
                 </div>
                 <div class="save_container">
@@ -61,9 +61,9 @@ function fetchPosts() {
                 <p onclick="userProfile(this.parentNode)" class="post_element post_user no-color-change">${post.user}</p>
                 <div class="edit_container">
                 <p class="post_element post_content">${post.content}</p>
-                <p class="post_element post_date">${post.date}</p>
                 <p onclick="changeLikes(this.parentNode.parentNode)" class="post_element post_likes"><span class="like-icon no-color-change">🤍</span> <span class="amount-of-likes">${post.likes}</span></p>
                 <p class="post_element post_comment">Comment</p>
+                <p class="post_element post_date">${post.date}</p>
                 <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary no-color-change">Edit</button>
                 </div>
                 <div class="save_container">

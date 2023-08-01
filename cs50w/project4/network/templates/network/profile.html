@@ -25,12 +25,15 @@
 
     
         {% if posts %}  
-        <div id="posts-container">
+        <div id="all_posts">
             {% for post in posts %}
-                <div data-postid="{{post.id}}" class="ind-post">
-                    <p class="post-info post-content">{{ post.content }}</p>
-                    <p onclick="changeLikes(this.parentNode)" class="post-info post-likes"><span class="no-color-change like-icon">❤️</span> <span class="amount-of-likes">{{ post.likes.count }}</span></p>
-                    <p class="post-info post-date">{{ post.date }}</p>
+                <div data-postid="{{post.id}}" class="post_container">
+                    {% if post.image != 'null' %}
+                        <img class="no-color-change post_image" src="{{ post.image }}">
+                    {% endif %}
+                    <p class="post_element post_content">{{ post.content }}</p>
+                    <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><span class="no-color-change like-icon">❤️</span> <span class="amount-of-likes">{{ post.likes.count }}</span></p>
+                    <p class="post_element post_date">{{ post.date }}</p>
                 </div>
             {% endfor %}
         </div>
@@ -124,8 +127,29 @@ function follow() {
     });
 };
 
+function initalLikes() {
+    const posts = document.querySelectorAll('[data-postid]');
+    
+    posts.forEach(postContainer => {
+        const postID = postContainer.dataset.postid;
+        const likeIcon = postContainer.querySelector('.like-icon');
+        fetch(`/api/likes/${postID}`)
+            .then(response => response.json())
+            .then(data => {
+                const users = data.usersid;
+                if (users.includes(currentUserID)) {
+                    likeIcon.innerHTML = '❤️';
+
+                } else if (!users.includes(currentUserID)) {
+                    likeIcon.innerHTML = '🤍';
+                }
+            })
+    })
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     follow();
+    initalLikes();
 });
 
 </script>

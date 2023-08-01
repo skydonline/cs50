@@ -22,6 +22,9 @@ body {
 body.light-mode {
     filter: invert(1);
 }
+.light-mode {
+    
+}
 
 .no-color-change {
     filter: invert(0);
@@ -121,7 +124,7 @@ input {
 }
 
 .post_element {
-    margin: 0px 10px 0px 20px;
+    margin: 0px 20px 0px 20px;
 }
 
 .post_user {
@@ -148,10 +151,12 @@ input {
 .post_content {
     display: block;
     margin-top: 10px;
+    font-size: 20px;
 }
 
 .post_date {
-    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
 }
 
 .post_text {
@@ -159,7 +164,9 @@ input {
 }
 
 .post_comment {
-    padding-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
 }
 
 .post_edit {
@@ -372,31 +379,8 @@ input {
     margin-left: 40px;
 }
 
-#posts-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 40px 60px 0 60px;
-}
-
-.ind-post {
-    width: calc(33.33% - 20px);
-    margin-bottom: 20px;
-    background-color: var(--hover);
-    padding: 15px;
-    border-radius: 5px;
-}
-
-.post-info {
-    margin: 5px 0 5px 0;
-}
-
-.post-content {
-    font-size: 20px;
-}
-
-.post-likes {
-    margin-top: 15px;
+.post_likes {
+    margin-top: 5px;
 }
 
 .post_likes:hover {
@@ -406,10 +390,6 @@ input {
 .like-icon {
     display: inline-block;
     transition: transform 0.3s ease;
-}
-
-.post-date {
-    font-size: 13px;
 }
 
 .no-posts {
