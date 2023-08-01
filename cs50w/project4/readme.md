@@ -1,7 +1,7 @@
 A social media network, done according to CS50 Project 4 guidelines. Added numerous other features ontop of the required ones, such as:
 - **General UI:** 
     - Dark Mode
-        - User can instantly switch between dark mode and light mode
+        - User can instantly switch between dark mode and light mode, has fading animation
         - Doesn't refresh page, and saves users preferences
         - Doesn't change colour of certain items that should be kept the same (e.g. images)
     - Change settings and password
