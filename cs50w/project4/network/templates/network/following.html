@@ -9,7 +9,7 @@
             <p class="post_element post_user">{{post.user}}</p>
             <p class="post_element post_content">{{post.content}}</p>
             <p class="post_element post_date">{{post.date}}</p>
-            <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><span class="no-color-change like-icon">❤️</span> <span class="amount-of-likes">{{post.likes.count}}</span></p>
+            <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><img src="https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png" class="like-icon"><span class="amount-of-likes">{{post.likes.count}}</span></p>
             <p class="post_element post_comment">Comment</p>
         </div>
         {% endfor %}

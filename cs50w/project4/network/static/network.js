@@ -24,8 +24,7 @@ function changeLikes(container) {
 
         // If they have already liked it, unlike it
         if (users.includes(currentUserID)) {
-            likeIcon.innerHTML = '🤍';
-            likeIcon.style.animation = 'growAndShrink 1s';
+            likeIcon.src = "https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png";
             likeCount.innerHTML = `${likeAmount - 1}`;
 
             fetch(`/api/likes/${postID}`, {
@@ -42,9 +41,13 @@ function changeLikes(container) {
 
         // If they haven't liked it, like it
         } else if (!users.includes(currentUserID)) {
-            likeIcon.innerHTML = '❤️';
-            likeIcon.style.animation = 'growAndShrink 1s';
+            likeIcon.src = "https://www.nicepng.com/png/full/778-7786050_download-instagram-like-icon-png.png";
+            likeIcon.classList.add('liked');
+            setTimeout(() => {
+                likeIcon.classList.remove("liked");
+              }, 300);
             likeCount.innerHTML = `${likeAmount + 1}`;
+
             fetch(`/api/likes/${postID}`, {
                 method: 'PUT',
                 body: JSON.stringify({

@@ -20,7 +20,7 @@
     </div>
 
     <div id="following">
-        <p id="follow_button" class="no-color-change"onclick=follow()>Follow</p>
+        <p id="follow_button" class=""onclick=follow()>Follow</p>
     </div>
 
     
@@ -29,10 +29,10 @@
             {% for post in posts %}
                 <div data-postid="{{post.id}}" class="post_container">
                     {% if post.image != 'null' %}
-                        <img class="no-color-change post_image" src="{{ post.image }}">
+                        <img class=" post_image" src="{{ post.image }}">
                     {% endif %}
                     <p class="post_element post_content">{{ post.content }}</p>
-                    <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><span class="no-color-change like-icon">❤️</span> <span class="amount_of_likes">{{ post.likes.count }}</span></p>
+                    <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><span class=" like-icon">❤️</span> <span class="amount_of_likes">{{ post.likes.count }}</span></p>
                     <p class="post_element post_date">{{ post.date }}</p>
                 </div>
             {% endfor %}

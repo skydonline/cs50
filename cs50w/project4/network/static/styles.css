@@ -445,7 +445,13 @@ input {
 
 .like-icon {
     display: inline-block;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s;
+    width: 18.5px;
+    margin-right: 5px;
+}
+
+.liked {
+    transform: scale(1.4);
 }
 
 .no-posts {
