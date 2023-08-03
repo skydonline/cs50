@@ -1,156 +1,202 @@
-{% extends 'network/layout.html' %}
-{% block title %}Profile{% endblock %}
-{% block body %}
-    <div id="profile-header">
-        <h1 id="profile-username">{{ user_profile.username }}</h1>
-            <table id="profile-table">
-                <tbody>
-                    <tr>
-                        <td class="profile-stats">{{ posts_count }}</td>
-                        <td class="profile-stats">{{ followers_count }}</td>
-                        <td id="followers-total" class="profile-stats">{{ following_count }}</td>
-                    </tr>
-                    <tr>
-                        <td class="profile-stats">Posts</td>
-                        <td class="profile-stats">Following</td>
-                        <td class="profile-stats">Followers</td>
-                    </tr>
-                </tbody>
-            </table>
-    </div>
-
-    <div id="following">
-        <p id="follow_button" class=""onclick=follow()>Follow</p>
-    </div>
-
-    
-        {% if posts %}  
-        <div id="all_posts">
-            {% for post in posts %}
-                <div data-postid="{{post.id}}" class="post_container">
-                    {% if post.image != 'null' %}
-                        <img class=" post_image" src="{{ post.image }}">
-                    {% endif %}
-                    <p class="post_element post_content">{{ post.content }}</p>
-                    <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><span class=" like-icon">❤️</span> <span class="amount_of_likes">{{ post.likes.count }}</span></p>
-                    <p class="post_element post_date">{{ post.date }}</p>
-                </div>
-            {% endfor %}
-        </div>
+{% extends "network/layout.html" %} {% block body %}
+<div id="profile-header">
+    <div id="profile-pic-section">
+        {% if user.profilePic %}
+        <img id="profilepage-profile-pic" src="{{ user.profilePic.url }}" />
         {% else %}
-        <div class="no-posts">
-            <h1>No Posts Yet</h1>
-        </div>
-        <div class="no-posts">
-            <img id="no-posts-image" src="https://community.jobaajlearnings.com/assets/nopost.png">
-        </div>
+        <img
+            id="profilepage-profile-pic"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/800px-Default_pfp.svg.png"
+        />
         {% endif %}
+        <div id="change-profile-pic">
+            {% if request.user == user %}
+            <div id="change-profile-pic-section">
+                <img
+                    src="https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png"
+                    id="exit-change-profile-pic"
+                />
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}{{ form.profilePic }}
+                    <button id="change-profile-pic-button" type="submit">
+                        Update Profile Picture
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <h1 id="profile-username">{{ user_profile.username }}</h1>
+    <table id="profile-table">
+        <tbody>
+            <tr>
+                <td class="profile-stats">{{ posts_count }}</td>
+                <td class="profile-stats">{{ followers_count }}</td>
+                <td id="followers-total" class="profile-stats">{{ following_count }}</td>
+            </tr>
+            <tr>
+                <td class="profile-stats">Posts</td>
+                <td class="profile-stats">Following</td>
+                <td class="profile-stats">Followers</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="following">
+    <p id="follow_button" class="" onclick="follow()">Follow</p>
+</div>
+
+{% if posts %}
+<div id="all_posts">
+    {% for post in posts %}
+    <div data-postid="{{post.id}}" class="post_container">
+        {% if post.image != 'null' %}
+        <img class="post_image" src="{{ post.image }}" />
+        {% endif %}
+        <p class="post_element post_content">{{ post.content }}</p>
+        <p onclick="changeLikes(this.parentNode)" class="post_element post_likes">
+            <img class="like-icon" />
+            <span class="amount_of_likes">{{ post.likes.count }}</span>
+        </p>
+        <p class="post_element post_date">{{ post.date }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="no-posts">
+    <h1>No Posts Yet</h1>
+</div>
+<div class="no-posts">
+    <img id="no-posts-image" src="https://community.jobaajlearnings.com/assets/nopost.png" />
+</div>
+{% endif %}
 <script>
-let is_following;
-let profile;
-let profileUsername;    // logged in user username
-let profileFirstVisit = true;
+    let is_following;
+    let profile;
+    let profileUsername; // logged in user username
+    let profileFirstVisit = true;
 
-// see if user is following or not
-function follow() {
+    // see if user is following or not
+    function follow() {
+        fetch(`/api/following/${currentUserID}`)
+            .then((response) => response.json())
+            .then((following) => {
+                is_following = following.following; // people that logged in user is following
+                profile = document.querySelector("#profile-username");
+                profileUsername = profile.textContent; // profile view username
+                const followers = document.querySelector("#followers-total");
+                const followerAmount = parseInt(followers.innerHTML, 10);
 
-    fetch(`/api/following/${currentUserID}`)
-    .then(response => response.json())
-    .then(following => {
-        is_following = following.following;     // people that logged in user is following
-        profile = document.querySelector('#profile-username');
-        profileUsername = profile.textContent;  // profile view username
-        const followers = document.querySelector('#followers-total');
-        const followerAmount = parseInt(followers.innerHTML,10);
+                // create constants for follow buttons
+                const followButton = document.querySelector("#follow_button");
 
-        // create constants for follow buttons
-        const followButton = document.querySelector('#follow_button');
+                if (profileUsername == currentUsername) {
+                    followButton.style.display = "none";
+                    return;
+                }
 
-        if (profileUsername == currentUsername) {
-            followButton.style.display = 'none';
-            return
-        }
+                // prevents changing following status on first visit
+                if (profileFirstVisit == true) {
+                    profileFirstVisit = false;
+                    if (is_following.includes(profileUsername)) {
+                        followButton.innerHTML = "Unfollow";
+                        followButton.style.backgroundColor = "var(--hover)";
+                    } else {
+                        followButton.innerHTML = "Follow";
+                        followButton.style.backgroundColor = "var(--blue)";
+                    }
+                    return; // breaks out of function
+                }
 
-        // prevents changing following status on first visit
-        if (profileFirstVisit == true) {
-                profileFirstVisit = false;
+                // checks if logged in user is following viewed profile
                 if (is_following.includes(profileUsername)) {
-                    followButton.innerHTML = 'Unfollow';
-                    followButton.style.backgroundColor = 'var(--hover)';
+                    // change button to follow
+                    followButton.innerHTML = "Follow";
+                    followButton.style.backgroundColor = "var(--blue)";
+                    followers.innerHTML = `${followerAmount - 1}`;
+
+                    // removes follower
+                    fetch(`/api/following/${currentUserID}`, {
+                        method: "PUT",
+                        body: JSON.stringify({
+                            following: profileUsername,
+                            action: "remove",
+                        }),
+                    })
+                        .then((response) => response.json())
+                        .then((result) => {
+                            console.log(result);
+                        });
                 } else {
-                    followButton.innerHTML = 'Follow';
-                    followButton.style.backgroundColor = 'var(--blue)';
+                    // change button to unfollow
+                    followButton.innerHTML = "Unfollow";
+                    followButton.style.backgroundColor = "var(--hover)";
+                    followers.innerHTML = `${followerAmount + 1}`;
+
+                    // adds follower
+                    fetch(`/api/following/${currentUserID}`, {
+                        method: "PUT",
+                        body: JSON.stringify({
+                            following: profileUsername,
+                            action: "add",
+                        }),
+                    })
+                        .then((response) => response.json())
+                        .then((result) => {
+                            console.log(result);
+                        });
                 }
-                return  // breaks out of function
-        }
+            });
+    }
 
+    function initalLikes() {
+        const posts = document.querySelectorAll("[data-postid]");
 
-        // checks if logged in user is following viewed profile
-        if (is_following.includes(profileUsername)) {
-            // change button to follow
-            followButton.innerHTML = 'Follow';
-            followButton.style.backgroundColor = 'var(--blue)';
-            followers.innerHTML = `${followerAmount - 1}`;
+        posts.forEach((postContainer) => {
+            const postID = postContainer.dataset.postid;
+            const likeIcon = postContainer.querySelector(".like-icon");
+            fetch(`/api/likes/${postID}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    const users = data.usersid;
+                    if (users.includes(currentUserID)) {
+                        likeIcon.src =
+                            "https://www.nicepng.com/png/full/778-7786050_download-instagram-like-icon-png.png";
+                    } else if (!users.includes(currentUserID)) {
+                        likeIcon.src =
+                            "https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png";
+                    }
+                });
+        });
+    }
 
-            // removes follower
-            fetch(`/api/following/${currentUserID}`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    following: profileUsername,
-                    action: 'remove'
-                })
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log(result);
-            })
-
-        } else {
-            // change button to unfollow
-            followButton.innerHTML = 'Unfollow';
-            followButton.style.backgroundColor = 'var(--hover)';
-            followers.innerHTML = `${followerAmount + 1}`;
-
-            // adds follower
-            fetch(`/api/following/${currentUserID}`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    following: profileUsername,
-                    action: 'add'
-                })
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log(result);
-            })
-        };
+    // Show change profile pic prompt
+    const profilePic = document.querySelector("#profilepage-profile-pic");
+    const changeProfilePic = document.querySelector("#change-profile-pic");
+    profilePic.addEventListener("click", function () {
+        changeProfilePic.style.display = "block";
     });
-};
 
-function initalLikes() {
-    const posts = document.querySelectorAll('[data-postid]');
-    
-    posts.forEach(postContainer => {
-        const postID = postContainer.dataset.postid;
-        const likeIcon = postContainer.querySelector('.like-icon');
-        fetch(`/api/likes/${postID}`)
-            .then(response => response.json())
-            .then(data => {
-                const users = data.usersid;
-                if (users.includes(currentUserID)) {
-                    likeIcon.innerHTML = '❤️';
+    // Change profile pic prompt
+    const fileInput = document.querySelector('input[type="file"]');
+    const submitButton = document.querySelector("#change-profile-pic-button");
+    submitButton.disabled = true;
 
-                } else if (!users.includes(currentUserID)) {
-                    likeIcon.innerHTML = '🤍';
-                }
-            })
-    })
-};
+    fileInput.addEventListener("change", function () {
+        submitButton.disabled = false;
+    });
 
-document.addEventListener('DOMContentLoaded', function() {
-    follow();
-    initalLikes();
-});
+    // Exit profile pic prompt
+    const exitProfilePic = document.querySelector("#exit-change-profile-pic");
+    exitProfilePic.addEventListener("click", function () {
+        changeProfilePic.style.display = "none";
+    });
 
+    // Load these functions upon loading page
+    document.addEventListener("DOMContentLoaded", function () {
+        follow();
+        initalLikes();
+    });
 </script>
 {% endblock %}

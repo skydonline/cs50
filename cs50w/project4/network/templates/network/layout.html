@@ -3,60 +3,72 @@
 <html lang="en">
     <head>
         <title>{% block title %}Social Network{% endblock %}</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+        />
         <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"/>
-        <link href="{% static 'styles.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+        <link href="{% static 'styles.css' %}" rel="stylesheet" />
         <div id="current-user" data-user="{{ request.user }}" data-id="{{ user.id }}"></div>
         <script src="{% static 'network.js' %}"></script>
     </head>
     <body>
         <div id="navbar">
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="{% url 'index' %}">Network</a>
-          
-            <div>
-              <ul class="navbar-nav mr-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile' user.id %}"><strong>{{ user.username }}</strong></a>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">All Posts</a>
-                </li>
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'following_posts' %}">Following</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'new_post' %}">New Post</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
-                {% endif %}
-              </ul>
-            {% if user.is_authenticated %}
-                <img onclick=darkMode() data-darkmode="{{user.dark_mode}}" id="dark-mode-toggle">
-                <a href="{% url 'settings' %}"><img id="settings-icon" src="https://cdn-icons-png.flaticon.com/512/126/126472.png"></a>
-            {% endif %}
-            </div>
-          </nav>
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="{% url 'index' %}">Network</a>
+
+                <div>
+                    <ul class="navbar-nav mr-auto">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'profile' user.id %}"
+                                ><strong>{{ user.username }}</strong></a
+                            >
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'following_posts' %}">Following</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'new_post' %}">New Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% if user.is_authenticated %}
+                    <img
+                        onclick="darkMode()"
+                        data-darkmode="{{user.dark_mode}}"
+                        id="dark-mode-toggle"
+                    />
+                    <a href="{% url 'settings' %}"
+                        ><img
+                            id="settings-icon"
+                            src="https://cdn-icons-png.flaticon.com/512/126/126472.png"
+                    /></a>
+                    {% endif %}
+                </div>
+            </nav>
         </div>
-        
-        <div class="body">
-            {% block body %}
-            {% endblock %}
-        </div>
+
+        <div class="body">{% block body %} {% endblock %}</div>
     </body>
 </html>

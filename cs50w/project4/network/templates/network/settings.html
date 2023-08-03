@@ -1,157 +1,182 @@
-{% extends 'network/layout.html' %}
-{% block title %}Settings{% endblock %}
-
-{% block body %}
+{% extends 'network/layout.html' %} {% block title %}Settings{% endblock %} {% block body %}
 <h1 id="settings-title">Settings</h1>
 
 <form id="settings-form" action="{% url 'settings' %}" method="post">
     {% csrf_token %}
-        <div class="form-group">
-            <label for="username">Username: </label>
-            <input class="settings-input" id="settings-username" value="{{ user.username }}" placeholder="Username" type="text">
-        </div>
-        <div class="form-group">
-            <label for="first_name">First Name: </label>
-            <input class="settings-input" id="settings-first_name" value="{{ user.first_name }}" placeholder="First Name" type="text">
-        </div>
-        <div class="form-group">
-            <label for="last_name">Last Name: </label>
-            <input class="settings-input" id="settings-last_name" value="{{ user.last_name }}" placeholder="Last Name" type="text">
-        </div>
-        <div class="form-group">
-            <label for="email">Email: </label>
-            <input class="settings-input" id="settings-email" value="{{ user.email }}" placeholder="Email Address" type="email">
-        </div>
-    <button onclick=newSettings() id="save-settings-button" class="btn blue-button ">Save Settings</button>
+    <div class="form-group">
+        <label for="username">Username: </label>
+        <input
+            class="settings-input"
+            id="settings-username"
+            value="{{ user.username }}"
+            placeholder="Username"
+            type="text"
+        />
+    </div>
+    <div class="form-group">
+        <label for="first_name">First Name: </label>
+        <input
+            class="settings-input"
+            id="settings-first_name"
+            value="{{ user.first_name }}"
+            placeholder="First Name"
+            type="text"
+        />
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last Name: </label>
+        <input
+            class="settings-input"
+            id="settings-last_name"
+            value="{{ user.last_name }}"
+            placeholder="Last Name"
+            type="text"
+        />
+    </div>
+    <div class="form-group">
+        <label for="email">Email: </label>
+        <input
+            class="settings-input"
+            id="settings-email"
+            value="{{ user.email }}"
+            placeholder="Email Address"
+            type="email"
+        />
+    </div>
+    <button onclick="newSettings()" id="save-settings-button" class="btn blue-button">
+        Save Settings
+    </button>
 </form>
 <div id="settings-change-success">
     <h1>Successfully changed settings!</h1>
     <h1>Redirecting to homepage...</h1>
 </div>
 
-<div class="error-message "></div>
+<div class="error-message"></div>
 
-<a href="{% url 'change_password' %}"><button id="change-password-button" class="btn btn-secondary">Change Password</button></a>
-
+<a href="{% url 'change_password' %}"
+    ><button id="change-password-button" class="btn btn-secondary">Change Password</button></a
+>
 
 <script>
-let settingsMessage;
-let settingsButton = document.querySelector('#save-settings-button');;
-function newSettings(container) {
-    // get all input fields
-    const newUsername = document.querySelector('#settings-username');
-    const newFirstName = document.querySelector('#settings-first_name');
-    const newLastName = document.querySelector('#settings-last_name');
-    const newEmail = document.querySelector('#settings-email');
+    let settingsMessage;
+    let settingsButton = document.querySelector("#save-settings-button");
+    function newSettings(container) {
+        // get all input fields
+        const newUsername = document.querySelector("#settings-username");
+        const newFirstName = document.querySelector("#settings-first_name");
+        const newLastName = document.querySelector("#settings-last_name");
+        const newEmail = document.querySelector("#settings-email");
 
-    settingsMessage = document.querySelector('.error-message');
+        settingsMessage = document.querySelector(".error-message");
 
-    if (newUsername.value == '' || newFirstName.value == '' || newLastName.value == '' || newEmail.value == '') {
-        settingsMessage.style.display = 'block';
-        settingsMessage.innerHTML = 'Please fill out all the required fields.';
-        if (newUsername.value == '') {
-            newUsername.style.border = 'var(--error-border)';
+        if (
+            newUsername.value == "" ||
+            newFirstName.value == "" ||
+            newLastName.value == "" ||
+            newEmail.value == ""
+        ) {
+            settingsMessage.style.display = "block";
+            settingsMessage.innerHTML = "Please fill out all the required fields.";
+            if (newUsername.value == "") {
+                newUsername.style.border = "var(--error-border)";
+            }
+            if (newFirstName.value == "") {
+                newFirstName.style.border = "var(--error-border)";
+            }
+            if (newLastName.value == "") {
+                newLastName.style.border = "var(--error-border)";
+            }
+            if (newEmail.value == "") {
+                newEmail.style.border = "var(--error-border)";
+            }
+            return;
         }
-        if (newFirstName.value == '') {
-            newFirstName.style.border = 'var(--error-border)';
-        }
-        if (newLastName.value == '') {
-            newLastName.style.border = 'var(--error-border)';
-        }
-        if (newEmail.value == '') {
-            newEmail.style.border = 'var(--error-border)';
-        }
-        return
-    }
 
-    if (!validateEmail(newEmail.value)) {
-        settingsMessage.style.display = 'block';
-        settingsMessage.innerHTML = 'Please enter a valid email address.';
-        newEmail.style.border = 'var(--error-border)';
-        return
-    }
+        if (!validateEmail(newEmail.value)) {
+            settingsMessage.style.display = "block";
+            settingsMessage.innerHTML = "Please enter a valid email address.";
+            newEmail.style.border = "var(--error-border)";
+            return;
+        }
 
-    // updates user settings
-    fetch(`/api/settings/${currentUserID}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-            username: newUsername.value,
-            first_name: newFirstName.value,
-            last_name: newLastName.value,
-            email: newEmail.value
+        // updates user settings
+        fetch(`/api/settings/${currentUserID}`, {
+            method: "PUT",
+            body: JSON.stringify({
+                username: newUsername.value,
+                first_name: newFirstName.value,
+                last_name: newLastName.value,
+                email: newEmail.value,
+            }),
         })
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log(result);
-        
-        // change info on page
-        document.querySelector('#settings-form').style.display = 'none';
-        document.querySelector('#change-password-button').style.display = 'none';
-        document.querySelector('#settings-change-success').style.display = 'block';
-        
-        // redirect user after 2 seconds
-        setTimeout(redirect, 2000);
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+
+                // change info on page
+                document.querySelector("#settings-form").style.display = "none";
+                document.querySelector("#change-password-button").style.display = "none";
+                document.querySelector("#settings-change-success").style.display = "block";
+
+                // redirect user after 2 seconds
+                setTimeout(redirect, 2000);
+            });
+    }
+
+    // redirect user
+    function redirect() {
+        window.location.replace("http://127.0.0.1:8000/");
+    }
+
+    // validate email
+    function validateEmail(email) {
+        var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        return regex.test(email);
+    }
+
+    // if user presses enter key, run newSettings, if other key, removes error messages
+    document.addEventListener("keydown", (event) => {
+        settingsMessage = document.querySelector(".error-message");
+
+        if (event.key === "Enter") {
+            const container = document.querySelector("#settings-form");
+            newSettings(container);
+        } else {
+            settingsMessage.style.display = "none"; // remove fill out fields message
+            const settingsInputs = document.querySelectorAll(".settings-input");
+            settingsInputs.forEach((element) => {
+                element.style.border = "var(--border)"; // change border back to grey
+            });
+        }
     });
-};
 
-// redirect user
-function redirect() {
-    window.location.replace('http://127.0.0.1:8000/');
-}
+    // enable and disable button
 
-// validate email
-function validateEmail(email) {
-    var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    return regex.test(email);
-}
+    // on page load, disable button
+    document.addEventListener("DOMContentLoaded", function () {
+        settingsButton = document.querySelector("#save-settings-button");
 
-// if user presses enter key, run newSettings, if other key, removes error messages
-document.addEventListener('keydown', (event) => {
-    settingsMessage = document.querySelector('.error-message');
-    
-    if (event.key === 'Enter') {
-        const container = document.querySelector('#settings-form');
-        newSettings(container);
+        // remove onclick attribute, change colors
+        settingsButton.removeAttribute("onclick");
+        settingsButton.style.cursor = "default";
+        settingsButton.disabled = true;
+    });
+
+    // change button styling when user starts typing
+    let firstKeypress = true;
+
+    function enableButton(event) {
+        if (firstKeypress) {
+            // add onclick attribute, change colors
+            settingsButton.setAttribute("onclick", "newSettings()");
+            settingsButton.style.cursor = "pointer";
+            settingsButton.disabled = false;
+            firstKeypress = false; // prevent function from running on next keypresses
+        }
     }
-    else {
-        settingsMessage.style.display = 'none';     // remove fill out fields message
-        const settingsInputs = document.querySelectorAll(".settings-input");
-        settingsInputs.forEach((element) => {
-            element.style.border = 'var(--border)'; // change border back to grey
-        });
-    }
-});
 
-
-
-
-// enable and disable button
-
-// on page load, disable button
-document.addEventListener("DOMContentLoaded", function() {
-    settingsButton = document.querySelector('#save-settings-button');
-
-    // remove onclick attribute, change colors
-    settingsButton.removeAttribute('onclick');
-    settingsButton.style.cursor = 'default';
-    settingsButton.disabled = true;
-});
-
-// change button styling when user starts typing
-let firstKeypress = true;
-
-function enableButton(event) {
-    if (firstKeypress) {
-        // add onclick attribute, change colors
-        settingsButton.setAttribute('onclick','newSettings()');
-        settingsButton.style.cursor = 'pointer';
-        settingsButton.disabled = false;
-        firstKeypress = false; // prevent function from running on next keypresses
-    }
-};
-
-// renable button on first keypress
-document.addEventListener("keydown", enableButton);
+    // renable button on first keypress
+    document.addEventListener("keydown", enableButton);
 </script>
 {% endblock %}

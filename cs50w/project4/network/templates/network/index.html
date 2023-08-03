@@ -1,44 +1,42 @@
-{% extends "network/layout.html" %}
-{% block body %}
+{% extends "network/layout.html" %} {% block body %}
 <div id="all_posts"></div>
 <div id="observerElement"></div>
 <div id="deletePostPrompt"></div>
 <script>
-// initalize current post id and step
-let current = 0;
-const step = 12;
-let hasMorePosts = true;
+    // initalize current post id and step
+    let current = 0;
+    const step = 5;
+    let hasMorePosts = true;
 
-function fetchPosts() {
-    // prevent fetching if there is no more posts
-    if (!hasMorePosts) {
-        return console.log("Error: There are no more posts.");
-    };
-    console.log(`Fetching posts starting from post ${current}`);
-
-    fetch(`/api/all_posts/?current=${current}&step=${step}`)
-    .then(response => response.json())
-    .then(data => {
-        const posts = data.posts;
-        
-        // if no more posts, set the flag to false
-        if (posts.length === 0) {
-            hasMorePosts = false;
-            return;
+    function fetchPosts() {
+        // prevent fetching if there is no more posts
+        if (!hasMorePosts) {
+            return console.log("Error: There are no more posts.");
         }
+        console.log(`Fetching posts starting from post ${current}`);
 
-        // creates a post in HTML for each post
-        posts.forEach(post => {
-            console.log(post.image);
+        fetch(`/api/all_posts/?current=${current}&step=${step}`)
+            .then((response) => response.json())
+            .then((data) => {
+                const posts = data.posts;
 
-            const postContainer = document.createElement('div');
-            postContainer.className = 'post_container';
-            postContainer.dataset.postid = post.id;
-            postContainer.dataset.userid = post.userID;
-    
-            if (post.image !== 'null') {
-                postContainer.innerHTML = 
-            `
+                // if no more posts, set the flag to false
+                if (posts.length === 0) {
+                    hasMorePosts = false;
+                    return;
+                }
+
+                // creates a post in HTML for each post
+                posts.forEach((post) => {
+                    console.log(post.image);
+
+                    const postContainer = document.createElement("div");
+                    postContainer.className = "post_container";
+                    postContainer.dataset.postid = post.id;
+                    postContainer.dataset.userid = post.userID;
+
+                    if (post.image !== "null") {
+                        postContainer.innerHTML = `
                 <p onclick="userProfile(this.parentNode)" class="post_element post_user">${post.user}</p>
                 <div class="edit_container">
                 <img class="post_element post_image " src="${post.image}">
@@ -55,9 +53,8 @@ function fetchPosts() {
                 <button onclick="deletePost(this.parentNode.parentNode)" class="post_element post_delete btn btn-danger ">Delete</button>
                 </div>
             `;
-            } else {
-            postContainer.innerHTML = 
-            `
+                    } else {
+                        postContainer.innerHTML = `
                 <p onclick="userProfile(this.parentNode)" class="post_element post_user ">${post.user}</p>
                 <div class="edit_container">
                 <p class="post_element post_content">${post.content}</p>
@@ -73,145 +70,139 @@ function fetchPosts() {
                 <button onclick="deletePost(this.parentNode.parentNode)" class="post_element post_delete btn btn-danger ">Delete</button>
                 </div>
             `;
-            }
+                    }
 
-            const likeIcon = postContainer.querySelector('.like-icon');
-            const postID = postContainer.dataset.postid;
+                    const likeIcon = postContainer.querySelector(".like-icon");
+                    const postID = postContainer.dataset.postid;
 
-            fetch(`/api/likes/${postID}`)
-            .then(response => response.json())
-            .then(data => {
-                const users = data.usersid;
-                if (users.includes(currentUserID)) {
-                    likeIcon.src = "https://www.nicepng.com/png/full/778-7786050_download-instagram-like-icon-png.png";
+                    fetch(`/api/likes/${postID}`)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            const users = data.usersid;
+                            if (users.includes(currentUserID)) {
+                                likeIcon.src =
+                                    "https://www.nicepng.com/png/full/778-7786050_download-instagram-like-icon-png.png";
+                            } else if (!users.includes(currentUserID)) {
+                                likeIcon.src =
+                                    "https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png";
+                            }
+                        });
 
-                } else if (!users.includes(currentUserID)) {
-                    likeIcon.src = "https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png";
-                }
+                    // if logged in user is current user, add edit button
+                    if (post.user == currentUsername) {
+                        postContainer.querySelector(".post_edit").style.display = "block";
+                    }
+
+                    document.querySelector("#all_posts").appendChild(postContainer);
+                });
+
+                current += step; // increment to fetch next batch of posts
             })
+            .catch((error) => console.error("Error fetching data:", error)); // incase there is another error, print to console
+    }
 
+    // prevent fetchPosts from happening multiple times at once
+    function debounce(func, delay) {
+        let timer;
+        return function () {
+            clearTimeout(timer);
+            timer = setTimeout(func, delay);
+        };
+    }
 
-            // if logged in user is current user, add edit button
-            if (post.user == currentUsername) { 
-                postContainer.querySelector('.post_edit').style.display = 'block';
-            }
-            
-            document.querySelector('#all_posts').appendChild(postContainer);
-        });
+    // prevent debouncing
+    const debouncedFetchPosts = debounce(fetchPosts, 500);
 
-        current += step;    // increment to fetch next batch of posts
-    })
-    .catch(error => console.error('Error fetching data:', error));  // incase there is another error, print to console
-};
+    // checks when user has scrolled to the bottom of the page
+    window.addEventListener("scroll", () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            debouncedFetchPosts();
+        }
+    });
+    document.addEventListener("DOMContentLoaded", () => fetchPosts()); // load inital posts
 
-// prevent fetchPosts from happening multiple times at once
-function debounce(func, delay) {
-    let timer;
-    return function() {
-        clearTimeout(timer);
-        timer = setTimeout(func, delay);
-    };
-}
+    // save post function
+    function savePost(container) {
+        const editedContent = container.querySelector(".post_textarea").value;
 
-// prevent debouncing
-const debouncedFetchPosts = debounce(fetchPosts, 500);
+        container.querySelector(".edit_container").style.display = "block";
+        container.querySelector(".save_container").style.display = "none";
 
-// checks when user has scrolled to the bottom of the page
-window.addEventListener('scroll', () => {
-if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-    debouncedFetchPosts();
-}
-});
-document.addEventListener('DOMContentLoaded', () => fetchPosts());  // load inital posts
+        container.querySelector(".post_content").textContent = editedContent;
 
+        const postID = container.dataset.postid;
 
-// save post function
-function savePost(container) {
-    const editedContent = container.querySelector('.post_textarea').value;
+        // update database
+        fetch(`/api/post/${postID}`, {
+            method: "PUT",
+            body: JSON.stringify({
+                content: editedContent,
+            }),
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => {
+                console.log("Error: Post unsuccessfully saved. ", error);
+            });
+    }
 
-    container.querySelector('.edit_container').style.display = 'block';
-    container.querySelector('.save_container').style.display = 'none';
+    // edit post function
+    function edit(container) {
+        const postContent = container.querySelector(".post_content").textContent;
 
-    container.querySelector('.post_content').textContent = editedContent;
+        const postID = container.dataset.postid;
 
-    const postID = container.dataset.postid;
+        container.querySelector(".edit_container").style.display = "none";
+        container.querySelector(".save_container").style.display = "block";
 
-    // update database
-    fetch(`/api/post/${postID}`, {
-        method: 'PUT',
-        body: JSON.stringify({ 
-            content: editedContent }),
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log(result);
-    })
-    .catch(error => {
-        console.log("Error: Post unsuccessfully saved. ", error);
-    })
-};
+        container.querySelector(".post_textarea").value = postContent;
+    }
 
-
-// edit post function
-function edit(container) {
-    const postContent = container.querySelector('.post_content').textContent;
-
-    const postID = container.dataset.postid;
-
-    container.querySelector('.edit_container').style.display = 'none';
-    container.querySelector('.save_container').style.display = 'block';
-
-    container.querySelector('.post_textarea').value = postContent;
-};
-
-
-// Delete button
-function deletePost(container) {
-    const deletePostPrompt = document.querySelector('#deletePostPrompt');
-    const postID = container.dataset.postid;
-    deletePostPrompt.innerHTML = 
-    `
+    // Delete button
+    function deletePost(container) {
+        const deletePostPrompt = document.querySelector("#deletePostPrompt");
+        const postID = container.dataset.postid;
+        deletePostPrompt.innerHTML = `
     <div id="delete_post_container">
         <p id="delete_post_header">Are you sure you want to delete this post?</p>
         <button onclick="confirmDelete(${postID}, 'delete')" class="btn btn-danger ">Delete</button>
         <button onclick="confirmDelete(${postID}, 'cancel')" id="delete_post_cancel" class="btn btn-secondary ">Cancel</button>
     </div>
     `;
-    deletePostPrompt.style.display = 'block';
-};
-
-// Confirm delete post prompt
-function confirmDelete(postID, action) {
-    const post = document.querySelector(`[data-postid="${postID}"]`);
-    const deletePostPrompt = document.querySelector('#deletePostPrompt');
-
-
-    if (action == 'delete') {
-        post.style.display = 'none';
-        deletePostPrompt.style.display = 'none';
-        fetch(`/api/post/${postID}`, {
-            method: 'DELETE',
-            body: JSON.stringify({
-                postid: postID
-            })
-        })
-        .then(response => response.json())
-        .then(result => {
-            console.log(result);
-        });
-        console.log("User has deleted the post.");
-
-    } else if (action == 'cancel') {
-        console.log("Cancelled post delete.");
-        deletePostPrompt.style.display = 'none';
+        deletePostPrompt.style.display = "block";
     }
-};
 
+    // Confirm delete post prompt
+    function confirmDelete(postID, action) {
+        const post = document.querySelector(`[data-postid="${postID}"]`);
+        const deletePostPrompt = document.querySelector("#deletePostPrompt");
 
-// user profile
-function userProfile(container) {
-    const userID = container.dataset.userid;
-    window.location.href = `http://127.0.0.1:8000/profile/${userID}`;
-};
+        if (action == "delete") {
+            post.style.display = "none";
+            deletePostPrompt.style.display = "none";
+            fetch(`/api/post/${postID}`, {
+                method: "DELETE",
+                body: JSON.stringify({
+                    postid: postID,
+                }),
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    console.log(result);
+                });
+            console.log("User has deleted the post.");
+        } else if (action == "cancel") {
+            console.log("Cancelled post delete.");
+            deletePostPrompt.style.display = "none";
+        }
+    }
+
+    // user profile
+    function userProfile(container) {
+        const userID = container.dataset.userid;
+        window.location.href = `http://127.0.0.1:8000/profile/${userID}`;
+    }
 </script>
 {% endblock %}

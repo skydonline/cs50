@@ -6,6 +6,7 @@ class User(AbstractUser):
     following = models.ManyToManyField("self", blank=True)
     followers = models.ManyToManyField("self", blank=True)
     dark_mode = models.BooleanField(default=True, verbose_name="Dark Mode")
+    profilePic = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.username

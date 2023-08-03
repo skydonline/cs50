@@ -127,3 +127,7 @@ STATICFILES_DIRS = [
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# For images
+MEDIA_ROOT = '/Users/sky/Desktop/cs50/cs50w/project4/network/static/images'
+MEDIA_URL = '/images/'

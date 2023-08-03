@@ -1,5 +1,5 @@
 :root {
-    --border: 1.5px solid #CED0D4;
+    --border: 1.5px solid #ced0d4;
     --input-bg: black;
     --hover: rgb(85, 85, 85);
     --error-border: 2px solid red;
@@ -9,13 +9,17 @@
 }
 
 html {
-    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans",
+        Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
     background-color: #121212;
 }
 
 body {
     background-color: #121212;
-    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans",
+        Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
     color: var(--white);
     min-height: 100vh;
 }
@@ -51,8 +55,6 @@ input {
     }
 }
 
-
-
 /* register & login */
 #register-login-max-width {
     width: 20vw;
@@ -72,8 +74,6 @@ input {
 #register-login-here {
     margin: 0;
 }
-
-
 
 /* home index */
 #observerElement {
@@ -108,11 +108,13 @@ input {
     background-color: var(--white);
 }
 
-.light-mode .nav-link, .light-mode .navbar-brand {
+.light-mode .nav-link,
+.light-mode .navbar-brand {
     color: black;
 }
 
-.nav-link, .navbar-brand {
+.nav-link,
+.navbar-brand {
     color: var(--white);
     border-radius: 5px;
     margin: 10px;
@@ -144,7 +146,11 @@ input {
     margin: 0px 20px 0px 20px;
 }
 
-.light-mode .post_user, .light-mode .post_content, .light-mode .amount_of_likes, .light-mode .post_comment, .light-mode .post_date {
+.light-mode .post_user,
+.light-mode .post_content,
+.light-mode .amount_of_likes,
+.light-mode .post_comment,
+.light-mode .post_date {
     color: black;
 }
 
@@ -200,7 +206,8 @@ input {
     font-size: 12px;
 }
 
-.post_save, .post_delete {
+.post_save,
+.post_delete {
     margin-bottom: 10px;
     font-size: 12px;
 }
@@ -252,7 +259,6 @@ input {
     position: absolute;
 }
 
-
 /* settings */
 #settings-icon {
     right: 23px;
@@ -271,7 +277,8 @@ input {
     margin-top: 30px;
 }
 
-#settings-form, #change-password-section {
+#settings-form,
+#change-password-section {
     margin-left: 50px;
     margin-top: 40px;
 }
@@ -280,7 +287,10 @@ input {
     margin: 20px 0px 30px 50px;
 }
 
-.light-mode #settings-title, .light-mode #settings-form, .light-mode #password-title, .light-mode #change-password-form {
+.light-mode #settings-title,
+.light-mode #settings-form,
+.light-mode #password-title,
+.light-mode #change-password-form {
     color: black;
 }
 
@@ -300,7 +310,9 @@ input {
     margin-left: 10px;
 }
 
-.light-mode .settings-input, .light-mode #new_password, .light-mode #confirm_password{
+.light-mode .settings-input,
+.light-mode #new_password,
+.light-mode #confirm_password {
     background-color: var(--white);
     color: black;
 }
@@ -314,7 +326,8 @@ input {
     pointer-events: none;
 }
 
-#new_password, #confirm_password {
+#new_password,
+#confirm_password {
     border: var(--border);
     border-radius: 5px;
     padding: 5px;
@@ -327,16 +340,17 @@ input {
     margin-bottom: 20px;
 }
 
-#password-change-success, #settings-change-success {
+#password-change-success,
+#settings-change-success {
     display: none;
     margin-top: 30px;
     margin-left: 20px;
 }
 
-.light-mode #password-change-success, .light-mode #settings-change-success {
+.light-mode #password-change-success,
+.light-mode #settings-change-success {
     color: black;
 }
-
 
 /* new post */
 #new_post_section {
@@ -369,7 +383,7 @@ input {
     height: 64px;
     width: 100%;
     display: block;
-    margin-right: 20px!important;
+    margin-right: 20px !important;
     padding: 5px;
 }
 
@@ -391,25 +405,74 @@ input {
     margin-top: 10px;
 }
 
-
-
 /* profiles */
+#profile-pic-section {
+    width: 100px;
+    height: 100px;
+    margin: 0 30px 0 20px;
+}
+
+#exit-change-profile-pic {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    filter: invert(1);
+    height: 25px;
+}
+
+#change-profile-pic {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+}
+
+#change-profile-pic-section {
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 300px;
+    width: 500px;
+    background-color: black;
+    border-radius: 10px;
+    padding: 50px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#profilepage-profile-pic {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 #following {
     display: inline-block;
 }
 
-#follow_button, #unfollow_button {
+#follow_button,
+#unfollow_button {
     display: block;
     border: 2px solid grey;
     border-radius: 5px;
     padding: 10px;
 }
 
-#follow_button:hover, #unfollow_button:hover {
+#follow_button:hover,
+#unfollow_button:hover {
     cursor: pointer;
 }
 
-.light-mode #profile-username, .light-mode #profile-table {
+.light-mode #profile-username,
+.light-mode #profile-table {
     color: black;
 }
 
@@ -417,6 +480,7 @@ input {
     display: flex;
     margin-top: 30px;
     margin-left: 20px;
+    align-items: center;
 }
 
 #profile-table {

@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+from .forms import UserProfilePic
 from .models import User, Post, Comment
 
 
@@ -196,10 +197,18 @@ def profile(request, user_profile):
     posts_count = len(posts)
     following_count = userID.following.count()
     followers_count = userID.followers.count()
+    form = UserProfilePic()
     if user in userID.following.all():
         is_following = True
     else:
         is_following = False
+    
+    if request.method == 'POST':
+        form = UserProfilePic(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('profile', args=[user_profile]))
+    
     return render(request, 'network/profile.html', {
         'user':user,
         'user_profile':userID,
@@ -207,7 +216,8 @@ def profile(request, user_profile):
         'posts_count':posts_count,
         'following_count':following_count,
         'followers_count':followers_count,
-        'is_following':is_following
+        'is_following':is_following,
+        'form':form
     })
 
 @csrf_exempt
