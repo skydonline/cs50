@@ -35,14 +35,17 @@
                     postContainer.dataset.postid = post.id;
                     postContainer.dataset.userid = post.userID;
 
-                    if (post.image !== "null") {
-                        postContainer.innerHTML = `
+                    if (post.image == "null") {
+                        post.image = "";
+                    }
+
+                    postContainer.innerHTML = `
                 <p onclick="userProfile(this.parentNode)" class="post_element post_user">${post.user}</p>
                 <div class="edit_container">
                 <img class="post_element post_image " src="${post.image}">
                 <p class="post_element post_content">${post.content}</p>
                 <p onclick="changeLikes(this.parentNode.parentNode)" class="post_element post_likes"><img src="https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png" class="like-icon "></span><span class="amount_of_likes">${post.likes}</span></p>
-                <p class="post_element post_comment">Comment</p>
+                <p class="post_element post_comment">Comments</p>
                 <p class="post_element post_date">${post.date}</p>
                 <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary ">Edit</button>
                 </div>
@@ -53,24 +56,6 @@
                 <button onclick="deletePost(this.parentNode.parentNode)" class="post_element post_delete btn btn-danger ">Delete</button>
                 </div>
             `;
-                    } else {
-                        postContainer.innerHTML = `
-                <p onclick="userProfile(this.parentNode)" class="post_element post_user ">${post.user}</p>
-                <div class="edit_container">
-                <p class="post_element post_content">${post.content}</p>
-                <p onclick="changeLikes(this.parentNode.parentNode)" class="post_element post_likes"><img src="https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png" class="like-icon "></span><span class="amount_of_likes">${post.likes}</span></p>
-                <p class="post_element post_comment">Comment</p>
-                <p class="post_element post_date">${post.date}</p>
-                <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary ">Edit</button>
-                </div>
-                <div class="save_container">
-                <textarea class="post_element post_textarea">${post.content}</textarea>
-                <br>
-                <button onclick="savePost(this.parentNode.parentNode)" class="post_element post_save btn btn-primary ">Save</button>
-                <button onclick="deletePost(this.parentNode.parentNode)" class="post_element post_delete btn btn-danger ">Delete</button>
-                </div>
-            `;
-                    }
 
                     const likeIcon = postContainer.querySelector(".like-icon");
                     const postID = postContainer.dataset.postid;
