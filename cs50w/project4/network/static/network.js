@@ -143,6 +143,8 @@ function postComments(container) {
 function exitComments() {
     const commentPrompt = document.querySelector("#commentPrompt");
     commentPrompt.style.display = "none";
+    const indPosts = document.querySelectorAll(".indComment");
+    indPosts.forEach((post) => post.remove());
 }
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -566,7 +566,7 @@ input {
     position: absolute;
     top: 50%;
     left: 50%;
-    height: 300px;
+    height: 600px;
     width: 500px;
     background-color: black;
     border-radius: 10px;
@@ -591,6 +591,10 @@ input {
     cursor: pointer;
 }
 
+.light-mode #exit_comment_prompt {
+    filter: invert(0);
+}
+
 .comment_info {
     margin: 0;
 }
@@ -599,4 +603,27 @@ input {
     font-size: 12px;
     margin: 0;
     margin-bottom: 5px;
+}
+
+#add_comment_form {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    display: flex;
+    align-items: center;
+}
+
+#add_comment_text {
+    width: 67%;
+    margin-left: 20px;
+    color: black;
+}
+
+#add_comment_button {
+    margin: 0;
+    right: 0;
+    padding: 5px;
+    margin-left: 10px;
 }
