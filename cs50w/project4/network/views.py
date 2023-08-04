@@ -312,8 +312,9 @@ def comments(request, postID):
             'post': postID,
             'comments': [
                 {   'user': comment.user.id,
+                    'username': comment.user.username,
                     'content': comment.content,
                     'date': comment.date
-                  }for comment in comments]
+                } for comment in comments]
         }
         return JsonResponse(data)

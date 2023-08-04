@@ -200,6 +200,10 @@ input {
     font-size: 14px;
 }
 
+.post_comment:hover {
+    cursor: pointer;
+}
+
 .post_edit {
     display: none;
     margin-bottom: 10px;
@@ -420,6 +424,10 @@ input {
     height: 25px;
 }
 
+#exit-change-profile-pic:hover {
+    cursor: pointer;
+}
+
 #change-profile-pic {
     display: none;
     position: absolute;
@@ -539,4 +547,56 @@ input {
 
 .light-mode #following_no_posts {
     color: black;
+}
+
+/* comments prompt */
+#commentPrompt {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+}
+
+#commentSection {
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 300px;
+    width: 500px;
+    background-color: black;
+    border-radius: 10px;
+    padding: 50px;
+    transform: translate(-50%, -50%);
+}
+
+.light-mode #commentSection {
+    background-color: var(--white);
+    color: black;
+}
+
+#exit_comment_prompt {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    filter: invert(1);
+    height: 25px;
+}
+
+#exit_comment_prompt:hover {
+    cursor: pointer;
+}
+
+.comment_info {
+    margin: 0;
+}
+
+.comment_date {
+    font-size: 12px;
+    margin: 0;
+    margin-bottom: 5px;
 }

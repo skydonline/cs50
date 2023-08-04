@@ -2,6 +2,15 @@
 <div id="all_posts"></div>
 <div id="observerElement"></div>
 <div id="deletePostPrompt"></div>
+<div id="commentPrompt">
+    <div id="commentSection">
+        <img
+            src="https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png"
+            id="exit_comment_prompt"
+            onclick="exitComments()"
+        />
+    </div>
+</div>
 <script>
     // initalize current post id and step
     let current = 0;
@@ -28,8 +37,6 @@
 
                 // creates a post in HTML for each post
                 posts.forEach((post) => {
-                    console.log(post.image);
-
                     const postContainer = document.createElement("div");
                     postContainer.className = "post_container";
                     postContainer.dataset.postid = post.id;

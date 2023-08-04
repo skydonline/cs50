@@ -115,14 +115,34 @@ function darkMode() {
 
 // Comments
 function postComments(container) {
-    console.log(container);
+    const commentPrompt = document.querySelector("#commentPrompt");
+    commentPrompt.style.display = "block";
+    const commentSection = document.querySelector("#commentSection");
     const postID = container.dataset.postid;
+
+    // Obtain comments for that specific post
     fetch(`/api/comments/${postID}`)
         .then((response) => response.json())
         .then((data) => {
             const comments = data.comments;
-            console.log(data);
+
+            // Cycle through each comment, add to container
+            comments.forEach((comment) => {
+                const indComment = document.createElement("div");
+                indComment.className = "indComment";
+                indComment.dataset.userid = comment.user;
+                indComment.innerHTML = `
+                <p class="comment_info">${comment.username}: ${comment.content}</p>
+                <p class="comment_date">${comment.date}</p>`;
+
+                commentSection.appendChild(indComment);
+            });
         });
+}
+
+function exitComments() {
+    const commentPrompt = document.querySelector("#commentPrompt");
+    commentPrompt.style.display = "none";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
