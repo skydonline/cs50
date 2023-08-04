@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
+
 import json
 
 from .forms import UserProfilePic
@@ -300,3 +302,18 @@ def darkmode(request, userID):
         user.dark_mode = not user.dark_mode
         user.save()
         return JsonResponse('Changed user darkmode preferences.', safe=False)
+
+@csrf_exempt
+def comments(request, postID):
+    if request.method == 'GET':
+        postID = postID
+        comments = Comment.objects.filter(post=postID)
+        data = {
+            'post': postID,
+            'comments': [
+                {   'user': comment.user.id,
+                    'content': comment.content,
+                    'date': comment.date
+                  }for comment in comments]
+        }
+        return JsonResponse(data)

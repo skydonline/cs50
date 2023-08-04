@@ -113,6 +113,18 @@ function darkMode() {
         });
 }
 
+// Comments
+function postComments(container) {
+    console.log(container);
+    const postID = container.dataset.postid;
+    fetch(`/api/comments/${postID}`)
+        .then((response) => response.json())
+        .then((data) => {
+            const comments = data.comments;
+            console.log(data);
+        });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     getUserInfo();
     setTimeout(darkMode, 20);

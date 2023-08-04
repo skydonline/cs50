@@ -45,7 +45,7 @@
                 <img class="post_element post_image " src="${post.image}">
                 <p class="post_element post_content">${post.content}</p>
                 <p onclick="changeLikes(this.parentNode.parentNode)" class="post_element post_likes"><img src="https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png" class="like-icon "></span><span class="amount_of_likes">${post.likes}</span></p>
-                <p class="post_element post_comment">Comments</p>
+                <p onclick="postComments(this.parentNode.parentNode)" class="post_element post_comment">Comments</p>
                 <p class="post_element post_date">${post.date}</p>
                 <button onclick="edit(this.parentNode.parentNode)" class="post_element post_edit btn btn-primary ">Edit</button>
                 </div>
