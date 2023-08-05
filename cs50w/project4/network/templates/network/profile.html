@@ -1,16 +1,15 @@
 {% extends "network/layout.html" %} {% block body %}
-<div id="profile-header">
+<div id="profile-header" data-profileid="{{user_profile}}">
     <div id="profile-pic-section">
-        {% if user.profilePic %}
-        <img id="profilepage-profile-pic" src="{{ user.profilePic.url }}" />
+        {% if user_profile.profilePic %}
+        <img id="profilepage-profile-pic" src="{{ user_profile.profilePic.url }}" />
         {% else %}
         <img
             id="profilepage-profile-pic"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/800px-Default_pfp.svg.png"
         />
-        {% endif %}
+        {% endif %} {% if request.user == user %}
         <div id="change-profile-pic">
-            {% if request.user == user %}
             <div id="change-profile-pic-section">
                 <img
                     src="https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png"
@@ -23,8 +22,8 @@
                     </button>
                 </form>
             </div>
-            {% endif %}
         </div>
+        {% endif %}
     </div>
     <h1 id="profile-username">{{ user_profile.username }}</h1>
     <table id="profile-table">
@@ -59,6 +58,7 @@
             <img class="like-icon" />
             <span class="amount_of_likes">{{ post.likes.count }}</span>
         </p>
+        <p onclick="postComments(this.parentNode)" class="post_element post_comment">Comments</p>
         <p class="post_element post_date">{{ post.date }}</p>
     </div>
     {% endfor %}
@@ -172,10 +172,14 @@
     }
 
     // Show change profile pic prompt
+    const profileHeader = document.querySelector("#profile-header");
+    const profileID = profileHeader.dataset.profileid;
     const profilePic = document.querySelector("#profilepage-profile-pic");
     const changeProfilePic = document.querySelector("#change-profile-pic");
+
     profilePic.addEventListener("click", function () {
-        changeProfilePic.style.display = "block";
+        console.log(profileID);
+        if (currentUsername == profileID) changeProfilePic.style.display = "block";
     });
 
     // Change profile pic prompt

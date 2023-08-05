@@ -120,6 +120,7 @@ function postComments(container) {
     // Show comment prompt
     const commentPrompt = document.querySelector("#commentPrompt");
     commentPrompt.style.display = "block";
+    console.log(container);
 
     // Get postID, add it to the comment section prompt
     const commentSection = document.querySelector("#commentSection");

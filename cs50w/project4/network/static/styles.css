@@ -472,6 +472,7 @@ input {
     border: 2px solid grey;
     border-radius: 5px;
     padding: 10px;
+    margin: 10px 0 0 10px;
 }
 
 #follow_button:hover,
