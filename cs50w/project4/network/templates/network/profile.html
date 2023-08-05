@@ -50,8 +50,8 @@
 <div id="all_posts">
     {% for post in posts %}
     <div data-postid="{{post.id}}" class="post_container">
-        {% if post.image != 'null' %}
-        <img class="post_image" src="{{ post.image }}" />
+        {% if post.image %}
+        <img class="post_image" src="{{ post.image.url }}" />
         {% endif %}
         <p class="post_element post_content">{{ post.content }}</p>
         <p onclick="changeLikes(this.parentNode)" class="post_element post_likes">

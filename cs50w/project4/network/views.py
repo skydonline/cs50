@@ -8,7 +8,7 @@ from django.core import serializers
 
 import json
 
-from .forms import UserProfilePic
+from .forms import UserProfilePic, PostImage
 from .models import User, Post, Comment
 
 
@@ -147,7 +147,7 @@ def all_posts_api(request):
                 'content': post.content,
                 'likes': post.likes.count(),
                 'date': post.get_formatted_date(),
-                'image':post.image,
+                'image': post.image.url if post.image else None,
             }
             for post in posts
         ]
@@ -196,18 +196,22 @@ def post_api(request, postID):
 
 # Create new post
 def new_post(request):
+    form = PostImage()
     if request.method == 'POST':
         # Get new post information
         user = request.user
         content = request.POST['new_post_text']
-        image = request.POST['new_post_image']
-        if image != '':
-            new_post = Post(user=user, content=content, image=image)
-        else:
-            new_post = Post(user=user, content=content)
+        image = request.FILES.get('image')
+        new_post = Post(user=user, content=content)
+
+        if image:
+            new_post.image = image
+
         new_post.save()
         return redirect('index')
-    return render(request, 'network/newpost.html')
+    return render(request, 'network/newpost.html', {
+        'form': form
+    })
 
 
 # Loads user profile

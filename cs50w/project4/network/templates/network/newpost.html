@@ -1,23 +1,22 @@
-{% extends 'network/layout.html' %}
-
-{% block title %}Create New Post{% endblock %}
-
-{% block body %}
+{% extends 'network/layout.html' %} {% block title %}Create New Post{% endblock %} {% block body %}
 <div id="new_post_section">
-
     <div id="new_post_box">
         <h2 id="new_post_header">New Post</h2>
-        <form method="post" action="{% url 'new_post' %}">
+        <form method="post" action="{% url 'new_post' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label>Content: </label>
-                <textarea class="" name="new_post_text" id="new_post_text" placeholder="What's on your mind?"></textarea>
+                <textarea
+                    class=""
+                    name="new_post_text"
+                    id="new_post_text"
+                    placeholder="What's on your mind?"
+                ></textarea>
             </div>
-            <div class="form-group" id="new_post_image_area">
-                <label id="new_post_image_label">Image (optional): </label>
-                <textarea class="" name="new_post_image" id="new_post_image" placeholder="Image URL"></textarea>
-            </div>
-            <button id="create_post_button" type="submit" class="btn btn-primary ">Create Post</button>
+            <div class="form-group" id="new_post_image_area">{{ form.image }}</div>
+            <button id="create_post_button" type="submit" class="btn btn-primary">
+                Create Post
+            </button>
         </form>
     </div>
 </div>

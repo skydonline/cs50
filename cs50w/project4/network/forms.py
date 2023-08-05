@@ -5,3 +5,8 @@ class UserProfilePic(ModelForm):
     class Meta:
         model = User
         fields = ['profilePic']
+
+class PostImage(ModelForm):
+    class Meta:
+        model = Post
+        fields = ['image']
