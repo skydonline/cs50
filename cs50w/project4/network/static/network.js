@@ -65,8 +65,8 @@ function changeLikes(container) {
         });
 }
 
-let layoutFirstVisit = true;
 // Changes dark mode preference
+let layoutFirstVisit = true;
 function darkMode() {
     const darkModeToggle = document.querySelector("#dark-mode-toggle");
     const darkModePref = darkModeToggle.dataset.darkmode;
@@ -89,21 +89,23 @@ function darkMode() {
         return;
     }
 
+    // Add/remove light mode class
     const body = document.body;
     body.classList.toggle("light-mode");
 
+    // Turn from true to false, change icon and theme
     if (darkModePref == "True") {
-        // Turn from true to false
         darkModeToggle.setAttribute("data-darkmode", "False");
         darkModeToggle.src =
             "https://cdn4.iconfinder.com/data/icons/biticon-weather-line/24/weather_sun_sunny_day-512.png";
     } else {
-        // Turn from false to true
+        // Turn from false to true, change icon and theme
         darkModeToggle.setAttribute("data-darkmode", "True");
         darkModeToggle.src =
             "https://cdn3.iconfinder.com/data/icons/meteocons/512/moon-symbol-512.png";
     }
 
+    // Update darkmode preference in database
     fetch(`/api/darkmode/${currentUserID}`, {
         method: "PUT",
     })
@@ -113,15 +115,18 @@ function darkMode() {
         });
 }
 
-// Comments
+// Comments prompt
 function postComments(container) {
+    // Show comment prompt
     const commentPrompt = document.querySelector("#commentPrompt");
     commentPrompt.style.display = "block";
+
+    // Get postID, add it to the comment section prompt
     const commentSection = document.querySelector("#commentSection");
     const postID = container.dataset.postid;
     commentSection.dataset.postid = postID;
 
-    // Obtain comments for that specific post
+    // Fetch comments for that post
     fetch(`/api/comments/${postID}`)
         .then((response) => response.json())
         .then((data) => {
@@ -134,23 +139,32 @@ function postComments(container) {
                 indComment.dataset.userid = comment.user;
                 indComment.innerHTML = `
                 <p class="comment_info">${comment.username}: ${comment.content}</p>
-                <p class="comment_date">${comment.date}</p>`;
+                <p class="comment_date">${comment.date}</p>
+                `;
 
                 commentSection.appendChild(indComment);
             });
         });
 }
 
+// Exit comment prompt
 function exitComments() {
+    // Hide comment prompt
     const commentPrompt = document.querySelector("#commentPrompt");
     commentPrompt.style.display = "none";
+
+    // Clear all posts in comment prompt
     const indPosts = document.querySelectorAll(".indComment");
     indPosts.forEach((post) => post.remove());
 }
 
+// Add comment to post
 function addComment(container) {
+    // Get postID and the user's comment
     const postID = container.dataset.postid;
     const commentContent = container.querySelector("#add_comment_text").value;
+
+    // Update the comment in the database
     fetch(`/api/comments/${postID}`, {
         method: "POST",
         body: JSON.stringify({
@@ -175,6 +189,7 @@ function addComment(container) {
             let currentYear = date.getFullYear();
             let currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
 
+            // Add comment to the prompt, appears to be responsive for user
             const indComment = document.createElement("div");
             indComment.className = "indComment";
             indComment.dataset.userid = currentUserID;
@@ -186,6 +201,7 @@ function addComment(container) {
         });
 }
 
+// Inital loading of dark mode preference and get current user info
 document.addEventListener("DOMContentLoaded", function () {
     getUserInfo();
     setTimeout(darkMode, 20);

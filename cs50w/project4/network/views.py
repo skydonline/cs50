@@ -13,6 +13,7 @@ from .models import User, Post, Comment
 
 
 def index(request):
+    # Order by most recently added
     posts = Post.objects.all().order_by('-date')
     all_posts_api(request)
     return render(request, "network/index.html", {
@@ -78,27 +79,35 @@ def settings(request):
         'user':user
     })
 
+
 def change_password(request):
     user = request.user
     return render(request, 'network/change_password.html')
 
+
+# Change password
 @csrf_exempt
 def password(request, userID):
     if request.method == 'PUT':
+        # Gets data, saves to database
         data = json.loads(request.body)
         new_password = data.get('new_password')
         user = User.objects.get(pk=userID)
         user.set_password(new_password)
         user.save()
+
         message = "Password successfully updated."
         return JsonResponse({"message": message})
     else:
         message = "Unauthorized."
         return JsonResponse({"message": message})
 
+
+# Change settings API
 @csrf_exempt
 def settings_api(request, userID):
     if request.method == 'PUT':
+        # Gets new user information
         data = json.loads(request.body)
         username = data.get('username')
         first_name = data.get('first_name')
@@ -106,6 +115,7 @@ def settings_api(request, userID):
         email = data.get('email')
         user = User.objects.get(pk=userID)
 
+        # Changes user information and save
         user.username = username
         user.first_name = first_name
         user.last_name = last_name
@@ -118,12 +128,16 @@ def settings_api(request, userID):
         return JsonResponse({"message": message})
     
 
+# API for all posts
 def all_posts_api(request):
+    # Get in increments of 5
     current = request.GET.get('current', 0)
-    step = request.GET.get('step', 10)
+    step = request.GET.get('step', 5)
     current = int(current)
     step = int(step)
     posts = Post.objects.order_by('-date')[current:current + step]
+
+    # JSON data
     data = {
         'posts': [
             {
@@ -141,6 +155,7 @@ def all_posts_api(request):
     return JsonResponse(data)
 
 
+# API for individual post
 @csrf_exempt
 def post_api(request, postID):
     try:
@@ -148,7 +163,7 @@ def post_api(request, postID):
     except Post.DoesNotExist:
         return JsonResponse({"Error: Post was not found."}, status=404)
 
-    # updates current post
+    # Updates post
     if request.method == "PUT":
         data = json.loads(request.body)
         new_content = data.get("content")
@@ -167,6 +182,7 @@ def post_api(request, postID):
 
             return JsonResponse(response_data)
     
+    # Deletes post
     elif request.method == 'DELETE':
         data = json.loads(request.body)
         postID = data.get('postid')
@@ -178,8 +194,10 @@ def post_api(request, postID):
     return JsonResponse({"Error: Invalid request"}, status=400)
 
 
+# Create new post
 def new_post(request):
     if request.method == 'POST':
+        # Get new post information
         user = request.user
         content = request.POST['new_post_text']
         image = request.POST['new_post_image']
@@ -192,8 +210,11 @@ def new_post(request):
     return render(request, 'network/newpost.html')
 
 
+# Loads user profile
 def profile(request, user_profile):
     user = request.user
+
+    # Gets profile information
     posts = Post.objects.filter(user=user_profile).order_by('-date')
     userID = User.objects.get(id=user_profile)
     posts_count = len(posts)
@@ -205,6 +226,7 @@ def profile(request, user_profile):
     else:
         is_following = False
     
+    # Updates profile picture
     if request.method == 'POST':
         form = UserProfilePic(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -222,6 +244,8 @@ def profile(request, user_profile):
         'form':form
     })
 
+
+# API for followers
 @csrf_exempt
 def followers(request, profile):
     user = User.objects.get(id=profile)
@@ -233,7 +257,9 @@ def followers(request, profile):
             'followers': [follower.username for follower in followers]
         }
         return JsonResponse(data)
-            
+
+
+# API for following
 @csrf_exempt
 def following(request, profile):
     user = User.objects.get(id=profile)
@@ -245,7 +271,7 @@ def following(request, profile):
         }
         return JsonResponse(data)
     
-    # adds or removes followers
+    # Adds/removes followers
     elif request.method == 'PUT':
         data = json.loads(request.body)
         user_change = data.get('following')
@@ -262,6 +288,7 @@ def following(request, profile):
         return JsonResponse('Successfully updated followers.', safe=False)
 
 
+# Gets posts of following
 def following_posts(request):
     user = request.user
     user_following = user.following.all()
@@ -270,10 +297,12 @@ def following_posts(request):
         'posts':posts
     })
 
+# API for post likes
 @csrf_exempt
 def post_likes(request, postID):
     post = Post.objects.get(id=postID)
 
+    # Gets the post likes
     if request.method == 'GET':
         likes_users = post.likes.all()
         data = {
@@ -281,6 +310,7 @@ def post_likes(request, postID):
         }
         return JsonResponse(data)
     
+    # Updates the post likes
     elif request.method == 'PUT':
         data = json.loads(request.body)
         user = data.get('user')
@@ -295,19 +325,26 @@ def post_likes(request, postID):
         post.save()
         return JsonResponse('Successfully updated likes.', safe=False)
     
+
+# Dark mode preference
 @csrf_exempt
 def darkmode(request, userID):
+    # Updates dark mode preference, switches to opposite
     if request.method == 'PUT':
         user = User.objects.get(pk=userID)
         user.dark_mode = not user.dark_mode
         user.save()
         return JsonResponse('Changed user darkmode preferences.', safe=False)
 
+# API for comments
 @csrf_exempt
 def comments(request, postID):
+    # Get the comments on that post
     if request.method == 'GET':
         postID = postID
         comments = Comment.objects.filter(post=postID)
+        
+        # Format into JSON
         data = {
             'post': postID,
             'comments': [
@@ -319,7 +356,9 @@ def comments(request, postID):
         }
         return JsonResponse(data)
     
+    # Add comments on that post
     if request.method == 'POST':
+        # Obtains the new comment information, add to database
         data = json.loads(request.body)
         userid = data.get('user')
         user = User.objects.get(pk=userid)
