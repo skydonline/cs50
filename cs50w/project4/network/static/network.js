@@ -1,4 +1,4 @@
-// get username and ID
+// Get username and ID
 let currentUsername;
 let currentUserID;
 function getUserInfo() {
@@ -162,6 +162,27 @@ function addComment(container) {
         .then((response) => response.json())
         .then((result) => {
             console.log(result);
+
+            // Clear comment input field
+            const commentInput = document.querySelector("#add_comment_text");
+            commentInput.value = "";
+            const commentSection = document.querySelector("#commentSection");
+
+            // Get date
+            const date = new Date();
+            let currentDay = String(date.getDate()).padStart(2, "0");
+            let currentMonth = String(date.getMonth() + 1).padStart(2, "0");
+            let currentYear = date.getFullYear();
+            let currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
+
+            const indComment = document.createElement("div");
+            indComment.className = "indComment";
+            indComment.dataset.userid = currentUserID;
+            indComment.innerHTML = `
+                <p class="comment_info">${currentUsername}: ${commentContent}</p>
+                <p class="comment_date">${currentDate}</p>`;
+
+            commentSection.appendChild(indComment);
         });
 }
 
