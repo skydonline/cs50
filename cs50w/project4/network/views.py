@@ -318,3 +318,14 @@ def comments(request, postID):
                 } for comment in comments]
         }
         return JsonResponse(data)
+    
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        userid = data.get('user')
+        user = User.objects.get(pk=userid)
+        content = data.get('content')
+        postid = data.get('post')
+        post = Post.objects.get(pk=postid)
+        newComment = Comment(user=user, post=post, content=content)
+        newComment.save()
+        return JsonResponse('Added comment', safe=False)

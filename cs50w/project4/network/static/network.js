@@ -119,6 +119,7 @@ function postComments(container) {
     commentPrompt.style.display = "block";
     const commentSection = document.querySelector("#commentSection");
     const postID = container.dataset.postid;
+    commentSection.dataset.postid = postID;
 
     // Obtain comments for that specific post
     fetch(`/api/comments/${postID}`)
@@ -145,6 +146,23 @@ function exitComments() {
     commentPrompt.style.display = "none";
     const indPosts = document.querySelectorAll(".indComment");
     indPosts.forEach((post) => post.remove());
+}
+
+function addComment(container) {
+    const postID = container.dataset.postid;
+    const commentContent = container.querySelector("#add_comment_text").value;
+    fetch(`/api/comments/${postID}`, {
+        method: "POST",
+        body: JSON.stringify({
+            user: currentUserID,
+            post: postID,
+            content: commentContent,
+        }),
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result);
+        });
 }
 
 document.addEventListener("DOMContentLoaded", function () {

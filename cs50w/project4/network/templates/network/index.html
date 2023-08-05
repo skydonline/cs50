@@ -9,11 +9,16 @@
             id="exit_comment_prompt"
             onclick="exitComments()"
         />
-        <form method="POST" id="add_comment_form">
+        <form id="add_comment_form">
             <input id="add_comment_text" type="text" />
-            <button id="add_comment_button" class="btn btn-primary" type="submit">
+            <p
+                onclick="addComment(this.parentNode.parentNode)"
+                id="add_comment_button"
+                class="btn btn-primary"
+                type="submit"
+            >
                 Add comment
-            </button>
+            </p>
         </form>
     </div>
 </div>
