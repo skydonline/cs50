@@ -230,7 +230,7 @@ input {
 
 #deletePostPrompt {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -241,7 +241,7 @@ input {
 
 #delete_post_container {
     z-index: 2;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     height: 300px;
@@ -553,7 +553,7 @@ input {
 /* comments prompt */
 #commentPrompt {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -564,7 +564,7 @@ input {
 
 #commentSection {
     z-index: 2;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     height: 600px;
@@ -581,7 +581,7 @@ input {
 }
 
 #exit_comment_prompt {
-    position: absolute;
+    position: fixed;
     top: 25px;
     right: 25px;
     filter: invert(1);

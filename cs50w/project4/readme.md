@@ -15,9 +15,11 @@ A social media network, done according to CS50 Project 4 guidelines. Added numer
         -   Uses APIs to fetch the post data, then dynamically loads them onto the screen
     -   Live and responsive updates for likes,unlikes, and the profile follow/unfollow button
 -   **Posts:**
-    -   Gave users option to add images to their posts
+    -   Gave users option to upload and add images to their posts
     -   Allow users to delete own posts
         -   Prompts user to confirm deleting their post
+    -   Allow users to comment on posts
+        -   Dynamically updates post comments when the comment has been added
 -   **Porfiles:**
     -   Allowed users to add and update their profile picture
 
