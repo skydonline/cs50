@@ -132,7 +132,7 @@ def settings_api(request, userID):
 def all_posts_api(request):
     # Get in increments of 5
     current = request.GET.get('current', 0)
-    step = request.GET.get('step', 5)
+    step = request.GET.get('step', 3)
     current = int(current)
     step = int(step)
     posts = Post.objects.order_by('-date')[current:current + step]
