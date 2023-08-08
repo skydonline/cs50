@@ -296,7 +296,7 @@ def following(request, profile):
 def following_posts(request):
     user = request.user
     user_following = user.following.all()
-    posts = Post.objects.filter(user__in=user_following)
+    posts = Post.objects.filter(user__in=user_following).order_by('-date')
     return render(request, 'network/following.html', {
         'posts':posts
     })

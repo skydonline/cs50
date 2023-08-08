@@ -1,21 +1,23 @@
-{% extends 'network/layout.html' %}
-{% block title %}Following{% endblock %}
+{% extends 'network/layout.html' %} {% block title %}Following{% endblock %} {% block body %}
 
-{% block body %}
 <div id="all_posts">
-    {% if post %}
-        {% for post in posts %}
-        <div data-postid="{{post.id}}"class="post_container">
-            <p class="post_element post_user">{{post.user}}</p>
-            <p class="post_element post_content">{{post.content}}</p>
-            <p class="post_element post_date">{{post.date}}</p>
-            <p onclick="changeLikes(this.parentNode)" class="post_element post_likes"><img src="https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png" class="like-icon"><span class="amount-of-likes">{{post.likes.count}}</span></p>
-            <p class="post_element post_comment">Comment</p>
-        </div>
-        {% endfor %}
-    {% else %}
-        <h1 id="following_no_posts">You are not following anyone, or the people you follow have yet to post.</h1>
+    {% if posts %} {% for post in posts %}
+    <div data-postid="{{post.id}}" class="post_container">
+        <p class="post_element post_user">{{post.user}}</p>
+        <p class="post_element post_content">{{post.content}}</p>
+        <p class="post_element post_date">{{post.date}}</p>
+        <p onclick="changeLikes(this.parentNode)" class="post_element post_likes">
+            <img
+                src="https://pixlok.com/wp-content/uploads/2021/12/Instagram-Like-Icon-83nfc3.png"
+                class="like-icon"
+            /><span class="amount-of-likes">{{post.likes.count}}</span>
+        </p>
+        <p class="post_element post_comment">Comment</p>
+    </div>
+    {% endfor %} {% else %}
+    <h1 id="following_no_posts">
+        You are not following anyone, or the people you follow have yet to post.
+    </h1>
     {% endif %}
-
 </div>
 {% endblock %}
