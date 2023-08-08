@@ -1,6 +1,8 @@
 # Social Media Network by Sky
 
-## Purpose:
+## Background:
+
+Created a social media network, similar to Instagram.
 
 The main purpose of this project was to learn about REST APIs, knowing how to efficiently communicate between the backend and frontend, and enhance my understanding of various languages/tools `(Django, Python, JavaScript, Bootstrap, HTML, CSS, etc.)`.
 
